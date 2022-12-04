@@ -1,3 +1,6 @@
+## Image files:
+image/*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
