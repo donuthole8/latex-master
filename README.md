@@ -11,3 +11,6 @@ https://qiita.com/muro5866/items/c8a3217132abff93e848
 % eval "$(/usr/libexec/path_helper)"
 % latexmk hoge.tex
 ```
+
+## その他
+容量が10MB以上のファイルはGithubにアップロードできないため.gitignoreにPDFと画像を追記

@@ -3,6 +3,9 @@
 *.jpg
 *.tif
 
+## PDF files:
+*.pdf
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
