@@ -1,22 +1,28 @@
-\documentclass[a4j,12pt]{jreport}	% 文書スタイルをレポート形式に設定
-\usepackage[dvips]{graphicx}		% グラフィック関連の強化パッケージ
-\usepackage{amsmath}				% 複数行数式を記述するためのパッケージ
+% 文書スタイルをレポート形式に設定
+\documentclass[a4j,12pt]{jreport}
+% グラフィック関連の強化パッケージ
+\usepackage[dvips]{graphicx}
+% 複数行数式を記述するためのパッケージ
+\usepackage{amsmath}				
 
-%標準表示は関連図書なので参考文献に変更
+% 標準表示は関連図書なので参考文献に変更
 \renewcommand{\bibname}{参考文献}
 
-%数式番号の装飾
-\renewcommand{\theequation}{\thechapter.\arabic{equation}}	%数式番号を(章.番号)に変更
-\makeatletter	%Latex文書中で@を使うための設定
-\@addtoreset{equation}{chapter}		%章ごとに数式番号をリセット
-\makeatother	%makeatletterに対応
-
+%% 数式番号の装飾
+% 数式番号を（章.番号）に変更
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}	
+% Latex文書中で@を使うための設定
+\makeatletter
+% 章ごとに数式番号をリセット
+\@addtoreset{equation}{chapter}
+% makeatletterに対応
+\makeatother
 % ここまでがプリアセンブル
 
 % ここから文が始まる
 \begin{document}
 
-% タイトル
+% 表紙
 \title{
 修士論文\\
 \vspace{30pt}
@@ -40,18 +46,21 @@
 }
 \maketitle
 
+% 目次で表示するセクションの階層を指定
+\setcounter{tocdepth}{3}
+% 目次を出力
+\tableofcontents
 
-\setcounter{tocdepth}{3}	%目次で表示するセクションの階層を指定
-\tableofcontents			%目次を出力
-
-%論文の中身
+% 論文の中身
 \include{contents/part1} 
 \include{contents/part2}
 \include{contents/part3}
 \include{contents/part4}
 
-\chapter*{対外発表}				%章番号無しの見出し
-\addcontentsline{toc}{chapter}{対外発表}	%目次に章タイプで出力(章番号分字下げ)
+% 章番号無しの見出し
+\chapter*{対外発表}
+% 目次に章タイプで出力（章番号分字下げ）
+\addcontentsline{toc}{chapter}{対外発表}	
 
 \begin{itemize}
 \item 室永将門，佐治斉．空撮画像を用いた土砂移動推定．ViEW2022，2022．
@@ -59,23 +68,29 @@
 
 \clearpage
 
-%標準表示は関連図書なので参考文献に変更
+% 標準表示は関連図書なので参考文献に変更
 \renewcommand{\bibname}{参考文献}
 
-\addcontentsline{toc}{chapter}{参考文献}	%目次に章タイプで出力(章番号分字下げ)
+% 目次に章タイプで出力(章番号分字下げ)
+\addcontentsline{toc}{chapter}{参考文献}
 
-\bibliographystyle{junsrt}	%参考文献を引用順に記述する形式に設定
-\bibliography{./bib/references.bib}	%引用するbibファイルを指定
+% 参考文献を引用順に記述する形式に設定
+\bibliographystyle{junsrt}
+% 引用するbibファイルを指定
+\bibliography{./bib/references.bib}
 
-\chapter*{謝辞}				%章番号無しの見出し
-\addcontentsline{toc}{chapter}{謝辞}	%目次に章タイプで出力(章番号分字下げ)
-  
-本研究を進めるにあたり，熱心なご指導，適切な御助言を
+% 章番号無しの見出し
+\chapter*{謝辞}
+% 目次に章タイプで出力（章番号分字下げ）
+\addcontentsline{toc}{chapter}{謝辞}
+  本研究を進めるにあたり，熱心なご指導，適切な御助言を
 いただきました佐治 斉教授に，厚く御礼申し上げます．
 
   また、数々の御意見、御協力をいただきました
 佐治研究室の皆様に深く感謝いたします．
 
-\begin{flushright}以上\end{flushright}	%右寄せ
+% 右寄せ
+\begin{flushright}以上\end{flushright}
 
-\end{document}	% 文書はここでおわり
+% 文書はここでおわり
+\end{document}
