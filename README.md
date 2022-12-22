@@ -3,10 +3,15 @@
 ## 概要
 修士論文のLaTex文書管理
 
-## 参考
+
+## Mac環境構築
 https://qiita.com/muro5866/items/c8a3217132abff93e848
 
+
 ## PDF生成
+LaTex Workshop必要
+- https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop
+
 ```
 % eval "$(/usr/libexec/path_helper)"
 % latexmk hoge.tex
