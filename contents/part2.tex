@@ -30,14 +30,13 @@
 
     最後に，後述の処理で色相と水平座標の距離が近い領域単位での処理を行うため，オルソ画像に対しMean-Shift法\cite{論文手法2}による領域分割を行う．また，この処理によって空撮画像の撮影機器や画像上の細かい地物による色や輝度のばらつきを抑制する．
 
-    TODO: Mean-Shift法書く
-
 
     \subsection{写真のアライメント}
-    \subsection{高密度クラウドの構築}
-    \subsection{メッシュの構築}
-    \subsection{テクスチャの構築}
-    \subsection{オルソ画像の作成}
+      
+    \subsection{高密度クラウド構築}
+    \subsection{メッシュ構築}
+    \subsection{テクスチャ構築}
+    \subsection{オルソモザイク画像の作成}
       \label{オルソ画像}
     \subsection{DSMの作成}
 
@@ -81,8 +80,10 @@
       TODO: 2行目，最後のr，式あってるか確認
       \begin{equation}
         \label{Mean-Shift法2}
-        y_{j+1}^s = \dfrac{\sum_{i=1}^{N} g_{i}^s x_{i}^s} {\sum_{i=1}^{N} g_{i}^s}, 
-        y_{j+1}^r = \dfrac{\sum_{i=1}^{N} g_{i}^r x_{i}^r} {\sum_{i=1}^{N} g_{i}^r??}
+        y_{j+1}^s = 
+          \dfrac{\sum_{i=1}^{N} g_{i}^s x_{i}^s} {\sum_{i=1}^{N} g_{i}^s}, 
+        y_{j+1}^r = 
+          \dfrac{\sum_{i=1}^{N} g_{i}^r x_{i}^r} {\sum_{i=1}^{N} g_{i}^r??}
       \end{equation}
 
       \begin{equation}
@@ -114,6 +115,7 @@
 
       その後，テクスチャ特徴による分類を行うことによって建物領域を抽出する．建物領域の屋根部分は均一であるという特徴を持つため，ある領域内の画素の不均一性を示す指標である異質度（dissimilarity）\cite{論文手法3}を導入する．異質度\Fref{異質度}による閾値処理を行うことによって，建物領域を抽出する．$P(i,j)$は$(i,j)$における画素値，$dissimilarity$は異質度を示す．
 
+      TODO: もう少し詳細に
       \begin{equation}
         \label{異質度}
         dissimilarity = \sum_{i=0}^{255} \sum_{j=0}^{255} (i,j) |i-j|
@@ -135,47 +137,43 @@
       検出した土砂候補領域より植生領域を除去し，土砂領域として残った領域を二値化することによって土砂マスクを生成する．
   
 
-      表\tref{}の特徴に従って分類を行うためヒストグラム均一化を行った画像に対しL*a*b*変換[8]を行う．L*a*b*色空間とは輝度を$L*$，色相と彩度を示す色度を$a*,b*$で表した色空間である．また，人間の視覚に近い色空間であるため，色情報を用いて分類を行う際に有効な指標である．本研究で用いる画像は現時点ではRGB色空間にて表されているためL*a*b*色空間への変換を行う．RGB色空間からL*a*b*色空間への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB色空間はデバイス依存色であり直接L*a*b*色空間に変換する式は存在しないため，デバイス独立色であるXYZ色空間[8]に変換してから処理を行う．XYZ色空間への変換は$0$から$255$までの8bit値を$0$から$1$に正規化し，$γ=2.2$に対するガンマ補正を線形の測定値に戻す．$E$は$R,G,B$のいずれかを表し，ダッシュ付きはガンマ補正された値を示す．ただし，\Fref{Lab表色系3}と\Fref{Lab表色系3}を満たすとする．
+      表\tref{}の特徴に従って分類を行うためヒストグラム均一化を行った画像に対しL*a*b*変換[8]を行う．L*a*b*色空間とは輝度を$L*$，色相と彩度を示す色度を$a*,b*$で表した色空間である．また，人間の視覚に近い色空間であるため，色情報を用いて分類を行う際に有効な指標である．本研究で用いる画像は現時点ではRGB色空間にて表されているためL*a*b*色空間への変換を行う．RGB色空間からL*a*b*色空間への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB色空間はデバイス依存色であり直接L*a*b*色空間に変換する式は存在しないため，デバイス独立色であるXYZ色空間[8]に変換してから処理を行う．XYZ色空間への変換は$0$から$255$までの8bit値を$0$から$1$に正規化し，$γ=2.2$に対するガンマ補正を線形の測定値に戻す．$E$は$R,G,B$のいずれかを表し，ダッシュ付きはガンマ補正された値を示す．ただし，\Fref{Lab表色系4}を満たすとする．
 
       TODO: a*,b*の括弧が一つ多い
-      % \begin{eqnarray}
-      % \label{Lab表色系1}
-      %   \left\{
-      %     \begin{array}{11}
-      %       L* = 116 \times f(\dfrac{Y} {Y_{n}}) - 16 \\
-      %       a* = 500 \times f(\dfrac{X} {X_{n}}) - f(\dfrac{Y} {Y_{n}}) \\
-      %       b* = 200 \times f(\dfrac{Y} {Y_{n}}) - f(\dfrac{Z} {Z_{n}})
-      %     \end{array}
-      %   \right.
-      % \end{eqnarray}
+      \begin{eqnarray}
+      \label{Lab表色系1}
+        \left\{
+          \begin{array}{l}
+            L* = 116 \times f(\dfrac{Y} {Y_{n}}) - 16 \\
+            a* = 500 \times [f(\dfrac{X} {X_{n}}) - f(\dfrac{Y} {Y_{n}})] \\
+            b* = 200 \times [f(\dfrac{Y} {Y_{n}}) - f(\dfrac{Z} {Z_{n}})]
+          \end{array}
+        \right.
+      \end{eqnarray}
 
-      TODO: Bが無い気がするw
-      \begin{equation}
+      \begin{eqnarray}
         \label{Lab表色系2}
-        X = 0.4124R + 0.3576G + 0.1805R
-        Y = 0.2126R + 0.7152G + 0.0722R
-        Z = 0.0193R + 0.1192G + 0.9505R
-      \end{equation}
+        \left\{
+          \begin{array}{l}
+            X = 0.412453R + 0.357580G + 0.180423B \\
+            Y = 0.212671R + 0.715160G + 0.072169B \\
+            Z = 0.019334R + 0.119193G + 0.950227B
+          \end{array}
+        \right.
+      \end{eqnarray}
 
-      TODO: 一番下の式どゆことw
-      \begin{equation}
-        \label{Lab表色系3}
-        E' = \dfrac{E'_{8bit}} {255.0}
-        E = \dfrac{E'} {12.92}
-          E' <= 0.04045
-        \dfrac{E' + 0.055} {1.055.4}
-          E' > 0.04045
-      \end{equation}
-
-      TODO: Tの位置ｗｗ
-      \begin{equation}
+      \begin{eqnarray}
         \label{Lab表色系4}
-        f(t) = 
-          t \dfrac{1} {3} 
-            t > (\dfrac{6} {29})^3
-          \dfrac{1} {3} (\dfrac{6} {29})^3 t + \dfrac{4} {29}
-            t <= (\dfrac{6} {29})^3
-      \end{equation}
+          f(t) = 
+          \left\{
+            \begin{array}{lll}
+              \sqrt[3]{t} 
+                &(t >    (\dfrac{6} {29})^3) \\
+              \dfrac{1} {3} (\dfrac{29} {6})^3 t + \dfrac{4} {29}
+                &(t \leq (\dfrac{6} {29})^3)
+            \end{array}
+          \right.
+      \end{eqnarray}
 
     \subsection{土砂候補領域検出}
       斜面崩壊領域は\tref{}に示すように，輝度と色相，彩度に特徴を持つ．よって，これらの特徴を表すL*a*b*色空間のL*値とa*値，HSV色空間のS値を用いる．ヒストグラム均一化処理後の画像に対しL*a*b*変換とHSV変換を行い，これらの指標を用いた閾値処理により斜面崩壊領域を検出する．
