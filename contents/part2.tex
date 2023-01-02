@@ -133,11 +133,56 @@
       \end{equation}
   
     \subsection{災害前DEMの切り抜き}
+      災害前DEMは．．．
+      TODO: いらないかも，実験データ切り抜いて使うなら
 
-    災害後DSM領域の抽出も一緒に
+      災害後DSM領域の抽出も一緒に
 
-    \subsection{傾斜度データの作成}
-    \subsection{傾斜方位データの作成}
+    \subsection{傾斜度・傾斜方位の算出}
+      XXXの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜度，傾斜方位を利用する．傾斜度とは，ある画素の傾斜度を表す指標であり，傾斜度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜度が指している方向を表す．各指標は\Fref{傾斜度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は0°（真北 TODO: °は記号にできるかも）から360°（真北）で右回りに計算される指標である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は$3 \times 3$画素（9画素）のメッシュがあった場合に，中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向の変化率}，\Fref{Y方向の変化率}より算出される．
+
+      TODO: （もう1箇所，バイキュービック法も，）x_{11とか}x_{8}とかの表記に変える（図もつける） or 式短く小さく
+
+      TODO: ArcTan? Atan？
+      TODO: 式あっているか調べる・参考文献掲載
+      \begin{equation}
+        \label{傾斜度}
+        slope_{radians} = 
+        \dfrac{180} {\pi} \times
+        atan \sqrt{
+          (\dfrac{dz}{dx})^2 + (\dfrac{dz}{dy})^2
+        }
+      \end{equation}
+
+      \begin{equation}
+        \label{傾斜方位}
+        aspect = 
+        \dfrac{180} {\pi} \times
+        \arctan 2 (\dfrac{dz}{dy}, \dfrac{dz}{dx})
+      \end{equation}
+
+      \begin{equation}
+        \label{X方向の変化率}
+        \dfrac{dz}{dx} = 
+          \dfrac{
+            (d(x+1,y-1) + 2d(x+1,y) + d(x+1,y+1)) - 
+            (d(x-1,y-1) + 2d(x-1,y) + d(x-1,y+1))
+            } 
+          {8}
+      \end{equation}
+
+      \begin{equation}
+        \label{Y方向の変化率}
+        \dfrac{dz}{dy} = 
+          \dfrac{
+            (d(x-1,y+1) + 2d(x,y+1) + d(x+1,y+1)) - 
+            (d(x-1,y-1) + 2d(x,y-1) + d(x+1,y-1))
+            } 
+          {8}
+      \end{equation}
+
+    \fref{}から\fref{}にDEMから導出した傾斜度と傾斜方向を示す．
+
 
   \section{領域データの抽出}
     \subsection{オルソ画像の領域分割}
