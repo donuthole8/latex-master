@@ -1,88 +1,86 @@
-\documentclass[a4j,12pt]{jreport}	% 文書スタイルをレポート形式に設定
-\usepackage[dvips]{graphicx}		% グラフィック関連の強化パッケージ
-\usepackage{amsmath}				% 複数行数式を記述するためのパッケージ
-
-%標準表示は関連図書なので参考文献に変更
-\renewcommand{\bibname}{参考文献}
-
-%数式番号の装飾
-\renewcommand{\theequation}{\thechapter.\arabic{equation}}	%数式番号を(章.番号)に変更
-\makeatletter	%Latex文書中で@を使うための設定
-\@addtoreset{equation}{chapter}		%章ごとに数式番号をリセット
-\makeatother	%makeatletterに対応
-
-% ここまでがプリアセンブル
+% プリアンブルの読み込み
+\input{preamble}
 
 % ここから文が始まる
 \begin{document}
+  %% 表紙
+  % タイトル
+  \title{
+    修士論文 \\
+    \vspace{30pt}
+    題目 \\
+    空撮画像を用いた土砂移動推定 \\
+    \vspace{60pt}
+  }
+  % 著者・指導教員
+  \author{
+    報告者 \\
+    氏名：室永 将門 \\
+    学籍番号：7113-0054 \\
+    \\
+    指導教員 \\
+    佐治 斉
+    \vspace{30pt}
+  }
+  % 日付・所属
+  \date{
+    提出日 \\
+    令和05年01月31日 \\
+    静岡大学大学院 総合科学技術研究科情報学専攻 \\
+  }
+  \maketitle
 
-% タイトル
-\title{
-修士論文\\
-\vspace{30pt}
-題目\\
-修士論文向けの\\
-サンプルTexスタイル\\
-\vspace{60pt}
-}
-\author{
-報告者\\
-氏名：佐治 太郎\\
-学籍番号：XXXX-XXXX\\
-\\
-指導教員\\
-\vspace{30pt}
-}
-\date{
-提出日\\
-平成XX年XX月XX日\\
-静岡大学大学院情報学研究科\\
-}
-\maketitle
+  %% 目次
+  % 目次で表示するセクションの階層を指定
+  \setcounter{tocdepth}{3}
+  % 目次を出力
+  \tableofcontents
 
+  %% 論文の中身
+  % はじめに
+  \include{contents/part1}
+  % 手法
+  \include{contents/part2}
+  % 実験
+  \include{contents/part3}
+  % まとめ
+  \include{contents/part4}
 
-\setcounter{tocdepth}{3}	%目次で表示するセクションの階層を指定
-\tableofcontents			%目次を出力
+  %% 対外発表
+  % 章番号無しの見出し
+  \chapter*{対外発表}
+    % 目次に章タイプで出力（章番号分字下げ）
+    \addcontentsline{toc}{chapter}{対外発表}	
 
-%論文の中身
-\include{contents/part1} 
-\include{contents/part2}
-\include{contents/part3}
-\include{contents/part4}
+    \begin{itemize}
+      \item 室永将門，佐治斉．空撮画像を用いた土砂移動推定．ViEW2022，2022．
+    \end{itemize}
 
-\chapter*{発表論文}				%章番号無しの見出し
-\addcontentsline{toc}{chapter}{\numberline{}発表論文}	%目次に章タイプで出力(章番号分字下げ)
+  \clearpage
 
-\begin{itemize}
-\item 国内学会
-\begin{itemize}
-\item test
-\end{itemize}
-\item 国際学会
-\begin{itemize}
-\item test
-\end{itemize}
-\end{itemize}
+  %% 参考文献
+  % 標準表示は関連図書なので参考文献に変更
+  \renewcommand{\bibname}{参考文献}
+    % 目次に章タイプで出力(章番号分字下げ)
+    \addcontentsline{toc}{chapter}{参考文献}
+    % 参考文献を引用順に記述する形式に設定
+    \bibliographystyle{junsrt}
+    % 引用するbibファイルを指定
+    \bibliography{./bib/references.bib}
 
-\clearpage
+  %% 謝辞
+  % 章番号無しの見出し
+  \chapter*{謝辞}
+    % 目次に章タイプで出力（章番号分字下げ）
+    \addcontentsline{toc}{chapter}{謝辞}
+      本研究を進めるにあたり，熱心なご指導，適切な御助言をいただきました佐治 斉教授に，厚く御礼申し上げます．
 
-%標準表示は関連図書なので参考文献に変更
-\renewcommand{\bibname}{参考文献}
+      また，数々の御意見，御協力をいただきました佐治研究室の皆様に深く感謝いたします．
 
-\addcontentsline{toc}{chapter}{\numberline{}参考文献}	%目次に章タイプで出力(章番号分字下げ)
+    % 右寄せ
+    \begin{flushright}
+      以上
+    \end{flushright}
 
-\bibliographystyle{junsrt}	%参考文献を引用順に記述する形式に設定
-\bibliography{../references.bib}	%引用するbibファイルを指定
-
-\chapter*{謝辞}				%章番号無しの見出し
-\addcontentsline{toc}{chapter}{\numberline{}謝辞}	%目次に章タイプで出力(章番号分字下げ)
-
-　例）本研究を進めるにあたり，熱心なご指導，適切な御助言を
-いただきました佐治 斉教授に，厚く御礼申し上げます．
-
-また、数々の御意見、御協力をいただきました
-佐治研究室の皆様に深く感謝いたします．
-
-\begin{flushright}以上\end{flushright}	%右寄せ
-
-\end{document}	% 文書はここでおわり
+% 文書はここでおわり
+\end{document}

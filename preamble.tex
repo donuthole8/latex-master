@@ -1,0 +1,24 @@
+%% パッケージ
+% 文書スタイルをレポート形式に設定
+\documentclass[a4j,12pt]{jreport}
+% グラフィック関連の強化パッケージ
+\usepackage[dvipdfmx]{graphicx}
+% 複数行数式を記述するためのパッケージ
+\usepackage{amsmath}
+% URL埋め込みのためのパッケージ
+\usepackage{url}
+
+%% 数式番号の装飾
+% 数式番号を（章.番号）に変更
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}	
+% Latex文書中で@を使うための設定
+\makeatletter
+% 章ごとに数式番号をリセット
+\@addtoreset{equation}{chapter}
+% makeatletterに対応
+\makeatother
+
+% 参照マクロ
+\newcommand{\fref}[1]{\textbf{図\ref{#1}}}
+\newcommand{\Fref}[1]{\textbf{式\ref{#1}}}
+\newcommand{\tref}[1]{\textbf{表\ref{#1}}}

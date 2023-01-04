@@ -1,5 +1,13 @@
 ## Image files:
-image/*
+*.png
+*.jpg
+*.tif
+
+## PDF files:
+*.pdf
+
+## .DS_Store
+.DS_Store
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
@@ -51,9 +59,6 @@ latex.out/
 # algorithms
 *.alg
 *.loa
-
-# achemso
-acs-*.bib
 
 # amsthm
 *.thm

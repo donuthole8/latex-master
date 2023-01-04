@@ -1,2 +1,208 @@
 \chapter{実験}
+  \section{実験環境}
+  TODO: Pythonコード，Metashapeそれぞれ？
+    本研究における実験環境を\tref{実験環境}に示す．
 
+    \begin{table}[b]
+      \centering
+      \caption{実験環境}
+      \label{実験環境}
+      \begin{tabular}{cc}
+        \hline
+        CPU & Apple M1 \\
+        メモリ & 16.00GB \\
+        OS & macOS Monterey 12.4 \\
+        使用言語 & Python 3.9.1 \\
+        コンパイラ & ？？ \\
+        使用ライブラリ & OpenCV XX, GDAL XX, numpy XXX, mpl(texture) , PyMeanShift XX, scipy \\ 
+        使用ソフトウェア & Metashape XX, QGIS 3.22.13 \\ \hline 
+      \end{tabular}
+    \end{table}
+
+
+  \section{入力データ}
+    本研究では災害後空撮画像として国立研究開発法人防災科学技術研究所様に貸与頂いた平成30年7月豪雨における広島県坂町小屋浦のドローン空撮画像\cite{}，国土地理院提供のXXX航空画像，災害前DEMとして国土地理院DEMを使用して実験を行った．空撮画像の詳細を\tref{空撮画像1}から\tref{空撮画像3}，国土地理院DEMの詳細を\tref{国土地理院DEM1}から\tref{国土地理院DEM（実験2）DEM3}に，基盤地図情報の詳細を\tref{基盤地図情報1}から\tref{基盤地図情報3}に示す．
+
+    参考：雨宮さん4例，岩下さん6例，中山さん3例，竹内さん3例，Ave. 4例
+
+    \begin{table}[b]
+      \centering
+      \caption{空撮画像（実験1）}
+      \label{空撮画像1}
+      \begin{tabular}{cc}
+        \hline
+        災害名称 &  \\
+        撮影箇所 &  \\
+        撮影機体 & ドローン \\
+        撮影日時 &  \\
+        使用枚数 & \\
+        解像度 &  \\
+        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{空撮画像（実験2）}
+      \label{空撮画像2}
+      \begin{tabular}{cc}
+        \hline
+        災害名称 &  \\
+        撮影箇所 &  \\
+        撮影機体 & ドローン \\
+        撮影日時 &  \\
+        使用枚数 & \\
+        解像度 &  \\
+        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    
+    \begin{table}[b]
+      \centering
+      \caption{空撮画像3}
+      \label{空撮画像3}
+      \begin{tabular}{cc}
+        \hline
+        災害名称 &  \\
+        撮影箇所 &  \\
+        撮影機体 & ドローン \\
+        撮影日時 &  \\
+        使用枚数 & \\
+        解像度 &  \\
+        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    NOTE: 日時・箇所だけ付番してまとめて良いかも
+    \begin{table}[b]
+      \centering
+      \caption{国土地理院DEM（実験1）}
+      \label{国土地理院DEM1}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 数値標高モデル？ \\
+        作成箇所 &  \\
+        作成日時 &  \\
+        解像度 & \\
+        メッシュサイズ &  \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{国土地理院DEM（実験2）}
+      \label{国土地理院DEM2}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 数値標高モデル？ \\
+        作成箇所 &  \\
+        作成日時 &  \\
+        解像度 & \\
+        メッシュサイズ &  \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{国土地理院DEM（実験3）}
+      \label{国土地理院DEM3}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 数値標高モデル？ \\
+        作成箇所 &  \\
+        作成日時 &  \\
+        解像度 & \\
+        メッシュサイズ &  \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+
+    NOTE: 日時・箇所だけ付番してまとめて良いかも
+    \begin{table}[b]
+      \centering
+      \caption{基盤地図情報（実験1）}
+      \label{基盤地図情報1}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 基盤地図情報基本項目 \\
+        作成箇所 & 建築物の外周線 \\
+        作成日時 &  \\
+        縮尺 & \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+
+    \begin{table}[b]
+      \centering
+      \caption{基盤地図情報（実験2）}
+      \label{基盤地図情報2}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 基盤地図情報基本項目 \\
+        作成箇所 & 建築物の外周線 \\
+        作成日時 &  \\
+        縮尺 & \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{基盤地図情報（実験3）}
+      \label{基盤地図情報3}
+      \begin{tabular}{cc}
+        \hline
+        名称 & 基盤地図情報基本項目 \\
+        作成箇所 & 建築物の外周線 \\
+        作成日時 &  \\
+        縮尺 & \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+
+  \section{実験結果}
+    \subsection{入力データ}
+    入力データとして利用した空撮画像の一部，国土地理院DEMを\fref{}から\fref{}に示す．
+    % 入力データとして267枚のドローン空撮画像と国土地理院DEMを利用した（図2, 図3）．
+  
+    \subsection{三次元復元}
+      まず，空撮画像に三次元復元を適用することにより生成した三次元モデルよりDSMとオルソ画像を作成し，標高値補正を行った．標高値補正済み災害後DSMを図4に，オルソ画像を図5に示す．
+
+    \subsection{災害前DEMの前処理}
+
+
+    \subsection{領域データの抽出}
+    
+    
+    \subsection{建物領域の標高値補正 or 災害後DSMの前処理}
+    
+    
+    \subsection{土砂領域のマスク画像作成}
+      その後，作成した土砂マスクを図6に示す．
+
+    \subsection{土砂量推定}
+      最後に，土砂量図と土砂移動図を図7，図8に示す．ここで図8の矢印は土砂位の移動方向を示す．
+
+    \subsection{土砂移動推定}
+
+
+  \section{精度評価}
+    メッシュ毎の土砂移動の方向についての精度評価を行った．
+
+    まず，国土地理院の空中写真による被災前後の比較\cite{使用データ3}にて目視判読にて土砂マスクの土砂部分に限定し正解データを作成した（\fref{}）． その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより精度評価を行った（\Fref{精度評価}）．answerは正解角度データ，resultは土砂移動推定結果による角度データ，accuracyは精度を示す．
+    
+    \begin{equation}
+      \label{精度評価}
+      accuracy = 1 - |\dfrac{answer - result} {180}|
+    \end{equation}
+
+    評価した結果，各メッシュの平均精度は0.759であった．
+
+
+  \section{考察}
