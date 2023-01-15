@@ -18,7 +18,7 @@
     \label{入力データ}
     入力データとして，複数枚の災害後空撮画像，DEM，建物ポリゴンを用いる．DEMは大まかに撮影範囲が含まれると想定される範囲を取得し利用する．
 
-    本研究で用いる災害後空撮画像は以下を満たしていることを前提とする．
+    本研究で用いる災害後空撮画像は以下を満たしていることを前提とする．\fref{空撮画像例}に災害後空撮画像の例を示す．
 
     \begin{itemize}
       \setlength{\itemsep}{-5pt}
@@ -28,7 +28,31 @@
       \item 後述処理での三次元復元を行える程度の枚数である
       \item 植生の色相が緑色に近い
       \item 該当箇所の災害前DEMと建物ポリゴンが整備されている
+      \item 夜間画像ではなく明瞭に画像内の地物が確認できる
     \end{itemize}
+
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4.25cm]{image/exmaple/input1.jpg}
+        \subcaption{入力画像例1}
+        \label{入力画像例1}
+      \end{minipage}
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4.25cm]{image/exmaple/input2.jpg}
+        \subcaption{入力画像例2}
+        \label{入力画像例2}
+      \end{minipage}
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4.25cm]{image/exmaple/input3.jpg}
+        \subcaption{入力画像例3}
+        \label{入力画像例3}
+      \end{minipage}
+      \caption{災害後空撮画像の例}
+      \label{空撮画像例}
+    \end{figure}
 
     また，災害前のDEMについては5mメッシュ，10mメッシュが存在するが解像度の高い5mメッシュであることが望ましい．
 
@@ -38,7 +62,7 @@
 
     \subsection{写真のアラインメント}
       \label{写真のアラインメント}
-      入力画像に対して特徴点の検出を行い，特徴マッチングを行うことで疎な点群の復元を行う．植生や水域等の特徴の少ない領域が原因でマッチングに失敗する場合があるため，失敗した画像を除去し再度処理を行う．また，精度を指定することが可能であり，精度を下げると入力画像の解像度を下げることによって処理時間を短縮する．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{}に，\ref{入力データ}節を用いた時の処理結果を\fref{}に示す．
+      入力画像に対して特徴点の検出を行い，特徴マッチングを行うことで疎な点群の復元を行う．植生や水域等の特徴の少ない領域が原因でマッチングに失敗する場合があるため，失敗した画像を除去し再度処理を行う．また，精度を指定することが可能であり，精度を下げると入力画像の解像度を下げることによって処理時間を短縮する．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{写真のアラインメント設定値}に，\ref{入力データ}節を用いた時の処理結果を\fref{写真のアラインメント結果}に示す．
 
       \begin{figure}[t]
         \begin{minipage}[c]{0.45\hsize}
@@ -122,7 +146,7 @@
 
       \begin{figure}[t]
         \centering
-        \includegraphics[width=6cm]{image/exmaple/view_reset.jpg}
+        \includegraphics[width=9cm]{image/exmaple/view_reset.jpg}
         \caption{Z軸指定の処理結果}
         \label{Z軸指定結果}
       \end{figure}
@@ -135,13 +159,13 @@
       \begin{figure}[t]
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/setting/dem.jpg}
+          \includegraphics[width=4.5cm]{image/setting/dem.jpg}
           \subcaption{設定値}
           \label{DEM構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/dem.jpg}
+          \includegraphics[width=9cm]{image/exmaple/dem.jpg}
           \subcaption{処理結果}
           \label{DEM構築結果}
         \end{minipage}
@@ -155,13 +179,13 @@
       \begin{figure}[t]
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/setting/ortho.jpg}
+          \includegraphics[width=4.5cm]{image/setting/ortho.jpg}
           \subcaption{設定値}
           \label{オルソモザイク構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/ortho.jpg}
+          \includegraphics[width=9cm]{image/exmaple/ortho.jpg}
           \subcaption{処理結果}
           \label{オルソモザイク構築結果}
         \end{minipage}
@@ -233,7 +257,7 @@
 
     \subsection{傾斜角度・傾斜方位の算出}
     TODO: Hornの公式かも
-      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0 \circ$から$360 \circ$（真北）で右回りに計算される指標である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は$e$を中心とした\fref{メッシュ図}のような$3 \times 3$画素（9画素）のメッシュがあった場合に，中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向の変化率}，\Fref{Y方向の変化率}より算出される．
+      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0 \circ$から$360 \circ$（真北）で右回りに計算される指標である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は$e$を中心とした\fref{メッシュ図}のような$3 \times 3$画素（9画素）のメッシュがあった場合に，中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向の変化率}，\Fref{Y方向の変化率}より算出される．\fref{入力DEM}のDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度図}と\fref{傾斜方位図}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとする．
 
       \begin{equation}
         \label{傾斜角度}
@@ -270,7 +294,28 @@
         \label{メッシュ図}
       \end{figure}
 
-    \fref{}から\fref{}にDEMから導出した傾斜角度と傾斜方向を示す．
+      TODO: カラーランプ変えるかも
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.3\hsize}
+          \centering
+          \includegraphics[width=4cm]{image/exmaple/dem_gsi.png}
+          \subcaption{入力DEM}
+          \label{入力DEM}
+        \end{minipage}
+        \begin{minipage}[c]{0.3\hsize}
+          \centering
+          \includegraphics[width=4cm]{image/exmaple/slope.png}
+          \subcaption{傾斜角度図}
+          \label{傾斜角度図}
+        \end{minipage}
+        \begin{minipage}[c]{0.3\hsize}
+          \centering
+          \includegraphics[width=4cm]{image/exmaple/aspect.png}
+          \subcaption{傾斜方位図}
+          \label{傾斜方位図}
+        \end{minipage}
+        \caption{傾斜角度・傾斜方位の算出}
+      \end{figure}
 
 
   \section{領域データの抽出}
@@ -281,6 +326,7 @@
       空撮画像等の土砂領域や植生領域を画素単位で検出することは難しいため，近傍画素との関係性を考慮した領域単位での判別を行う．本研究ではMean-Shift法\cite{Mean-Shift法1, Mean-Shift法2}を用いた領域分割を行う．Mean-Shift法とはカーネル密度推定によるクラスタリング手法の一つで，画像の領域分割，動画像における対象物体追跡に用いられる．また，領域分割の代表的な手法であるk-means法\cite{k-means法}に比べ，クラスタ数を事前に決める必要が無いという利点がある．Mean-Shift法は，$d$次元空間中の$N$個の点群を標本として得られるような確率密度関数$f(x)$を考え，その標本点から確率密度関数$f(x)$の極大点を探索する手法である．本研究では，Mean-Shift法による領域分割を行うことによって近傍の類似色画素を領域単位に分類しつつ，空撮画像の撮影機器や画像上の細かい地物による色や輝度のばらつきを抑制する．次に，Mean-Shift法にてカラー画像の領域分割を行う手順について説明する．
 
       \begin{enumerate}
+        \setlength{\itemsep}{-5pt}
         \item カラー画像中の各画素の位置を二次元座標$x_i$，その画素値を三次元チャンネル$v_{i} =(R_{i},G_{i},B_{i})$とし，画素位置と画素値を結合した5次元空間内の点$z_{i} = (x_{i}, v_{i})$を考える．距離と色相が近い画素が5次元空間内でクラスタを成しているとし，各画素をMean-Shift法でクラスタリングする．
         \item すべての$z_{i}$にMean-Shift法を適用し，収束位置$z_{i}^c = (x_{i}^c , v_{i}^c)$を計算する．
         \item $x_{i}$の画素値を収束位置の画素の値$v^c = (R^c, G^c, B^c)$に置き換えることによって領域分割ができる．カーネル密度推定とMean-Shift法の計算式を\Fref{Mean-Shift法1}と\Fref{Mean-Shift法2}示す．ただし，\Fref{Mean-Shift法3}を満たすとする.
@@ -317,7 +363,23 @@
         \right.
       \end{equation}
 
-      なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像の一部を切り取った画像に対し，Mean-Shift法を適用した例を\fref{}に示す．
+      なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像の一部を切り取った画像を\fref{Mean−Shift法入力}に，Mean-Shift法を適用した結果を\fref{Mean-Shift法出力}に示す．
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/trimming.png}
+          \subcaption{入力画像}
+          \label{Mean−Shift法入力}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/mean-shift.png}
+          \subcaption{出力画像}
+          \label{Mean−Shift法出力}
+        \end{minipage}
+        \caption{Mean-Shift法}
+      \end{figure}
 
       また，この際に各領域の座標データをコンピュータ上に保存する．．．（良い書き方ねえか？？）ファイル，テキストファイル，バイナリファイル，イメージデータとして
 
@@ -328,6 +390,7 @@
       \ref{オルソ画像の領域分割}項にて取得した座標データを利用し，ラベリングテーブルを作成する．作成したラベリングテーブルより，領域番号毎に輪郭抽出を行う．．．
       領域毎に以下の処理を行う．
       \begin{enumerate}
+        \setlength{\itemsep}{-5pt}
         \item 領域の全座標を取得
         \item 領域座標よりを用いてその領域の輪郭抽出を行う
         \item 輪郭データより面積・周囲長頭を算出
@@ -379,9 +442,17 @@
       \end{equation}
 
       TODO: QGISでの処理も書くかも
-      また，国土地理院の提供する建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域の検出結果に建物ポリゴンを重畳し，建物候補領域に建物ポリゴンのピクセルが50\%以上含まれる場合，その建物候補領域を建物領域として検出する．\fref{オルソモザイク構築}項のオルソ画像より建物領域を検出した結果を\fref{}に示す．
+      また，国土地理院の提供する建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域の検出結果に建物ポリゴンを重畳し，建物候補領域に建物ポリゴンのピクセルが50\%以上含まれる場合，その建物候補領域を建物領域として検出する．\fref{オルソ画像の領域分割}項の入力画像より建物領域を検出した例を\fref{建物領域検出}に示す．
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/building.png}
+        \caption{建物領域の検出結果}
+        \label{建物領域検出}
+      \end{figure}
 
     \subsection{建物領域の標高値補正}
+    TODO: もうちょい詳しく（他の手法使わないなら）
       その後，抽出した建物領域に隣接する地表面領域の標高値を用いて建物領域の全画素の標高値を地表面領域の平均標高値に変換することで，建物領域の標高値を除去する．
 
     \subsection{災害後DSMの正規化}
@@ -396,20 +467,13 @@
 
   \section{土砂領域のマスク画像作成}
     \label{土砂マスク}
+      TODO: ヒストグラム平坦化とかするかも
+
     \subsection{L*a*b*表色系への変換}
-      オルソ画像に対し L*a*b*変換\cite{Lab表色系1}を行う．L*a*b*表色系とは輝度をL*，色相と彩度を示す色度をa*，b*で表した表色系であり，人間の視覚に近い表色系であるため色情報を用いて分類を行う際に有効な指標であることが示されている．また，空撮画像中の土砂領域はRGB表色系における赤色の値が大きく，植生領域は緑色の値が大きいという特徴があるため，本研究ではL*a*b*表色系を用いて土砂領域及び植生領域を検出する\cite{Lab表色系2, Lab表色系3, Lab表色系4}．本研究で用いる画像は本処理時点でRGB表色系にて表されているためL*a*b*表色系への変換を行う．RGB表色系からL*a*b*表色系への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB表色系はデバイス依存色であり直接L*a*b*表色系に変換する式は存在しないため，デバイス独立色であるXYZ表色系\cite{XYZ表色系}に変換してから処理を行う．XYZ表色系への変換式を\Fref{XYZ表色系}に示す．$X,Y,Z$，$R,G,B$はそれぞれ，XYZ表色系及びRGB表色系の各チャンネルの画素値を表す．
+    TODO: 文献4は一つめの引用にした方が良いかも？
 
+      オルソ画像に対し L*a*b*変換\cite{Lab表色系1}を行う．L*a*b*表色系とは輝度をL*，色相と彩度を示す色度をa*，b*で表した表色系であり，人間の視覚に近い表色系であるため色情報を用いて分類を行う際に有効な指標であることが示されている．また，空撮画像中の土砂領域はRGB表色系における赤色の値が大きく，植生領域は緑色の値が大きいという特徴があるため，本研究ではL*a*b*表色系を用いて土砂領域及び植生領域を検出する\cite{Lab表色系2, Lab表色系3, Lab表色系4}．本研究で用いる画像は本処理時点でRGB表色系にて表されているためL*a*b*表色系への変換を行う．RGB表色系からL*a*b*表色系への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB表色系はデバイス依存色であり直接L*a*b*表色系に変換する式は存在しないため，デバイス独立色であるXYZ表色系\cite{XYZ表色系}に変換してから処理を行う．XYZ表色系への変換式を\Fref{XYZ表色系}に示す．$X,Y,Z$，$R,G,B$はそれぞれ，XYZ表色系及びRGB表色系の各チャンネルの画素値を表す．また，上記指標のうち，\ref{オルソ画像の領域分割}項の領域分割画像において検出に用いるa*値，b*値画像の例を\fref{Lab画像}に示す．
 
-
-
-      斜面崩壊・浸水領域での色相や輝度などの特徴を表2.1に示す．これらの特徴を用いて各領域の検出を行う．x〜x項に本手法で用いる指標の算出方法と各災害領域について示す．
-
-      オルソ画像中の土砂領域・植生領域はそれぞれ赤色味・緑色味が強くなる傾向がある．本研究では人間の色覚に類似したL*a*b*表色系を用い，赤色味の強い画素では$a*$値が高く，緑色味の強い画素では $a*$値が低いという特徴を利用した閾値処理によって土砂候補領域・植生領域の検出を行う．
-      
-      検出した土砂候補領域より植生領域を除去し，土砂領域として残った領域を二値化することによって土砂マスクを生成する．
-
-
-      
       \begin{eqnarray}
       \label{Lab表色系1}
         \left\{
@@ -444,20 +508,89 @@
           \end{array}
         \right.
       \end{eqnarray}
+      
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/lab-a.png}
+          \subcaption{a*値画像}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/lab-b.png}
+          \subcaption{b*値画像}
+        \end{minipage}
+        \caption{L*a*b*表色系の画像例}
+        \label{Lab画像}
+      \end{figure}
 
+    \subsection{土砂領域検出}
+      土砂災害は植生の多い山間部の斜面にて多発し，土砂領域を検出する際に誤検出する可能性がある．よって，植生領域を検出結果より除去する．土砂領域，植生領域は\tref{領域特徴}に示す特徴を持つためL*a*b*表色系のa*値，b*値の指標を用いた閾値処理を行い，土砂候補領域，植生領域を検出する．検出した土砂候補領域より植生領域を除去した領域を土砂領域とする．{オルソ画像の領域分割}項の入力画像より土砂領域を検出した結果を\fref{土砂領域検出}に示す．
 
-    \subsection{土砂候補領域検出}
-      斜面崩壊領域は\tref{}に示すように，輝度と色相，彩度に特徴を持つ．よって，これらの特徴を表すL*a*b*表色系のL*値とa*値，HSV表色系のS値を用いる．ヒストグラム均一化処理後の画像に対しL*a*b*変換とHSV変換を行い，これらの指標を用いた閾値処理により斜面崩壊領域を検出する．
+    TODO: 土砂マスクでこの指標で試す
 
-    \subsection{植生領域検出}
-      \label{植生除去}
-      各不要領域の特徴を\Fref{}に示す．...節と同様にこれらの特徴を用いて各領域の検出を行う．...項に各不要領域について示す．
-      斜面崩壊は植生を多く含む山間部の斜面にて発生し，土砂に混ざった植生部分を誤検出する可能性がある．（あと普通に繁茂してるやつ）よって，\Fref{}で示した植生領域の特徴から，a*値を用いた閾値処理によって植生領域を検出する．
-
-    \subsection{統合処理による土砂領域検出}
-    \subsection{土砂領域検出結果の二値化処理}
-    \subsection{土砂領域のマスク画像作成}
+    \begin{table}[b]
+      \centering
+      \caption{領域特徴}
+      \label{領域特徴}
+      \begin{tabular}{ccc}
+        \hline
+        領域 & a* & b* \\ \hline
+      \end{tabular}
+    \end{table}
     
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4cm]{image/exmaple/sediment_candidate.png}
+        \subcaption{土砂候補領域の検出結果}
+      \end{minipage}
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4cm]{image/exmaple/vegitation.png}
+        \subcaption{植生領域の検出結果}
+      \end{minipage}
+      \begin{minipage}[c]{0.3\hsize}
+        \centering
+        \includegraphics[width=4cm]{image/exmaple/sediment.png}
+        \subcaption{土砂領域の検出結果}
+      \end{minipage}
+      \caption{土砂領域の検出結果}
+      \label{土砂領域検出}
+    \end{figure}
+
+    \subsection{土砂領域のマスク画像作成}
+    TODO: 傾斜度で30°以上の領域だけに限定するかも
+
+      {土砂領域検出}項の検出結果より，二値の土砂マスク画像を作成する．作成する土砂マスク画像の目的として植生領域を除去し，後の土砂量と土砂移動推定にて範囲を限定する目的で使用する．そのため，本研究では土砂領域中の建物領域やその他の地物等は土砂マスク画像の土砂領域として検出する．\ref{土砂領域}の検出結果は色相情報を用いているため屋根の色相によっては建物領域を未検出とすることがある．よって，建物領域の穴を埋め土砂領域として扱うため，クロージング処理\cite{クロージング処理}を適用した後，面積が閾値以下の小領域を除去する．
+      
+      クロージング処理とは二値画像において膨張処理\footnote{注目画素の8近傍に白画素がある場合，注目画素を白色にする処理}を複数回行った後，収縮処理\footnote{注目画素の8近傍に黒画素がある場合，注目画素を黒色にする処理}を同回数行い，画像中の穴を除去する処理である．\ref{土砂領域検出}項の検出結果の二値画像におけるクロージング処理の適用例を\fref{クロージング処理}に示す．
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/lab-a.png}
+          \subcaption{入力画像}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/lab-b.png}
+          \subcaption{出力画像}
+        \end{minipage}
+        \caption{クロージング処理の出力結果}
+        \label{クロージング処理}
+      \end{figure}
+
+      TODO: ラベリングの引用か注釈つける
+      この後，二値画像に対しラベリング処理\cite{}を行うことによって各領域の面積を算出する．面積における閾値処理によって，一般住宅と同程度，或いはそれ以下の面積の小領域を除去する．先程のクロージング処理結果に対し小領域除去を行った結果を\fref{小領域除去}に示す．
+      
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/building.png}
+        \caption{小領域の除去結果}
+        \label{小領域除去}
+      \end{figure}
+
 
   \section{土砂量推定}
     \label{土砂量推定}
