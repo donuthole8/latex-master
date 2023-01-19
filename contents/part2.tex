@@ -173,7 +173,7 @@
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=9cm]{image/exmaple/dem.jpg}
+          \includegraphics[width=9cm]{image/exmaple/dsm.jpg}
           \subcaption{処理結果}
           \label{DEM構築結果}
         \end{minipage}
@@ -269,7 +269,7 @@
       \begin{figure}[t]
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/dem_gsi.png}
+          \includegraphics[width=\linewidth]{image/exmaple/dem.png}
           \subcaption{災害前DEM}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
@@ -333,12 +333,12 @@
       \begin{figure}[t]
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/dem_gsi.png}
+          \includegraphics[width=\linewidth]{image/exmaple/slope.png}
           \subcaption{傾斜角度図}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
+          \includegraphics[width=\linewidth]{image/exmaple/aspect.png}
           \subcaption{傾斜方位図}
         \end{minipage}
         \caption{傾斜角度・傾斜方位の算出}
@@ -348,7 +348,7 @@
       \begin{figure}[t]
         \begin{minipage}[c]{0.329\hsize}
           \centering
-          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \includegraphics[width=4.5cm]{image/exmaple/dem.png}
           \subcaption{入力DEM}
           \label{入力DEM}
         \end{minipage}
@@ -456,7 +456,7 @@
       \begin{figure}[t]
         \centering
         \includegraphics[width=9cm]{image/exmaple/labeling.png}
-        \caption{カラーラベリングのラベル画像}
+        \caption{カラーラベリング結果}
         \label{カラーラベリング結果}
       \end{figure}
 
@@ -499,6 +499,9 @@
 
     \subsection{ジオリファレンサ}
       \label{ジオリファレンサ}
+
+      TODO: ジオリファレンサ画像に変更
+
       \ref{入力データ}節で用いる空撮画像において，本研究では位置情報が埋め込まれていない画像群の例が存在する．この場合，オルソ画像や災害後DSMは位置情報を持たないため地図上への重畳ができない．しかし，後述の処理でオルソ画像や災害後DSMと，災害前DEM等の位置情報が対応付けられいてる必要がある．そのため，災害後DSMに位置情報が付与されていない場合，QGISのジオリファレンサ機能を利用して位置合わせを行う．ジオリファレンサとは，位置情報を持たないラスタデータ\footnote{画像同様に格子状のピクセル構造を持つデータ構造}に任意の位置情報を付与する手法であり，この処理によって位置情報を持たないオルソ画像や災害後DSMを地図上に重畳でき，災害前DEM等と位置情報の対応付けが可能となる．
 
       QGISにてジオリファレンサを起動し，ラスタデータと地図上のランドマークの対応点付けを行う．ラスタデータのランドマークを選択し，地図上の同一のランドマークを選択する．最低4箇所の対応付けが必要であり，ラスタデータと地図上の対応するランドマークの対応付け箇所が多いほど精度が向上する．本処理の設定値を\fref{ジオリファレンサ設定値}に，\ref{DEM構築}項の出力結果を国土地理院の標準地図\cite{標準地図}上に重畳した結果を\fref{ジオリファレンサ結果}に示す．
