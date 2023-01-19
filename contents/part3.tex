@@ -2,8 +2,6 @@
   \section{実験環境}
     本研究における実験環境を\tref{実験環境}に示す．
 
-    TODO: もし分かればMetashapeの実験環境を記述
-
     \begin{table}[t]
       \centering
       \caption{実験環境}
@@ -424,7 +422,7 @@
 
     \subsection{災害後オルソ画像の前処理}
       \label{災害後オルソ画像の前処理}
-      \ref{三次元復元}項のオルソ画像と\ref{入力データ（実験）}の建物ポリゴンを入力とし，災害後オルソ画像の前処理を行った．実験1-3におけるオルソ画像の領域分割結果，カラーラベリング結果，建物領域検出の各処理結果を\fref{災害後オルソ画像の前処理（実験1）}から\fref{災害後オルソ画像の前処理結果（実験3）}に示す．
+      \ref{三次元復元}項のオルソ画像と\ref{入力データ（実験）}の建物ポリゴンを入力とし，災害後オルソ画像の前処理を行った．実験1-3におけるオルソ画像の領域分割結果，カラーラベリング結果，建物領域検出の各処理結果を\fref{災害後オルソ画像の前処理（実験1）}から\fref{災害後オルソ画像の前処理結果（実験3）}に示す．なお，赤色の領域が建物領域である．
 
       \begin{figure}[t]
         \begin{minipage}[c]{0.329\hsize}
@@ -440,7 +438,7 @@
         \begin{minipage}[c]{0.329\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/exmaple/building.png}
-          \subcaption{建物領域検出結果（赤）}
+          \subcaption{建物領域検出結果}
         \end{minipage}
         \caption{災害後オルソ画像の前処理結果（実験1）}
         \label{災害後オルソ画像の前処理結果（実験1）}
@@ -460,9 +458,9 @@
         \begin{minipage}[c]{0.329\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
-          \subcaption{建物領域検出結果（赤）}
+          \subcaption{建物領域検出結果}
         \end{minipage}
-        \caption{災害後オルソ画像の前処理結果（実験3）}      
+        \caption{災害後オルソ画像の前処理結果（実験2）}      
       \end{figure}
 
       \begin{figure}[t]
@@ -479,7 +477,7 @@
         \begin{minipage}[c]{0.329\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
-          \subcaption{建物領域検出結果（赤）}
+          \subcaption{建物領域検出結果}
         \end{minipage}
         \caption{災害後オルソ画像の前処理結果（実験3）}
         \label{災害後オルソ画像の前処理結果（実験3）}
@@ -551,7 +549,7 @@
 
     \subsection{土砂領域マスク画像作成}
       \label{土砂領域マスク画像作成（実験）}
-      \ref{災害後オルソ画像の前処理}項のオルソ画像の領域分割結果を入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成（実験1）}から\fref{土砂領域マスク画像作成（実験3）}に示す．
+      \ref{災害後オルソ画像の前処理}項のオルソ画像の領域分割結果を入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成（実験1）}から\fref{土砂領域マスク画像作成（実験3）}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
 
       \begin{figure}[t]
         \begin{tabular}{cc}
@@ -563,17 +561,17 @@
           \begin{minipage}[c]{0.45\hsize}
             \centering
             \includegraphics[width=\linewidth]{image/exmaple/sediment_candidate.png}
-            \subcaption{土砂候補領域検出結果（赤）}
+            \subcaption{土砂候補領域検出結果}
           \end{minipage} \\
           \begin{minipage}[c]{0.45\hsize}
             \centering
             \includegraphics[width=\linewidth]{image/exmaple/vegetation.png}
-            \subcaption{植生領域検出結果（緑）}
+            \subcaption{植生領域検出結果}
           \end{minipage} &
           \begin{minipage}[c]{0.45\hsize}
             \centering
             \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
-            \subcaption{土砂領域検出結果（赤）}
+            \subcaption{土砂領域検出結果}
           \end{minipage} \\
           \begin{minipage}[c]{0.45\hsize}
             \centering
@@ -583,6 +581,69 @@
         \end{tabular}
         \caption{土砂領域マスク画像作成（実験1）}
         \label{土砂領域マスク画像作成（実験1）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \begin{tabular}{cc}
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/clahe.png}
+            \subcaption{ヒストグラム均一化結果}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment_candidate.png}
+            \subcaption{土砂候補領域検出結果}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/vegetation.png}
+            \subcaption{植生領域検出結果}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
+            \subcaption{土砂領域検出結果}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/normed_mask.png}
+            \subcaption{土砂領域マスク画像}
+          \end{minipage} &
+        \end{tabular}
+        \caption{土砂領域マスク画像作成（実験2）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \begin{tabular}{cc}
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/clahe.png}
+            \subcaption{ヒストグラム均一化結果}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment_candidate.png}
+            \subcaption{土砂候補領域検出結果}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/vegetation.png}
+            \subcaption{植生領域検出結果}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
+            \subcaption{土砂領域検出結果}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/normed_mask.png}
+            \subcaption{土砂領域マスク画像}
+          \end{minipage} &
+        \end{tabular}
+        \caption{土砂領域マスク画像作成（実験3）}
+        \label{土砂領域マスク画像作成（実験3）}
       \end{figure}
 
 
@@ -635,9 +696,7 @@
 
 
   \section{精度評価}
-    メッシュ毎の土砂移動の方向についての精度評価を行った．
-
-    まず，国土地理院の空中写真による被災前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}にて目視判読にて土砂マスクの土砂部分に限定し正解データを作成した（\fref{}）． その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより精度評価を行った（\Fref{精度評価}）．answerは正解角度データ，resultは土砂移動推定結果による角度データ，accuracyは精度を示す．
+    メッシュ毎の土砂移動の方向についての精度評価を行った．まず，国土地理院の空中写真による被災前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}にて目視判読にて土砂マスクの土砂部分に限定し\fref{正解データ}に示す正解データを作成した．その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより，\Fref{精度評価}に示す精度評価を行った．$answer$は正解角度データ，$result$は土砂移動推定結果による角度データ，$accuracy$は精度を示す．
     
     \begin{equation}
       \label{精度評価}
