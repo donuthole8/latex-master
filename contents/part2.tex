@@ -67,13 +67,13 @@
       入力画像に対して特徴点の検出を行い，特徴マッチングを行うことで疎な点群の復元を行う．植生や水域等の特徴の少ない領域が原因でマッチングに失敗した場合，失敗した画像を除去し再度処理を行う．また，精度を指定することが可能であり，精度を下げると入力画像の解像度を下げることによって処理時間を短縮する．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{写真のアラインメント設定値}に，\ref{入力データ}節を用いた時の処理結果を\fref{写真のアラインメント結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/alignment.jpg}
           \subcaption{設定値}
           \label{写真のアラインメント設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/alignment.jpg}
           \subcaption{処理結果}
@@ -88,13 +88,13 @@
       \ref{写真のアラインメント}項によって得られた点群と入力画像より法線を算出し，密な点群を生成する．精度を指定することが可能であり，後述の\ref{DEM構築}項の精度に影響する．また，深度フィルタによって外れ値の除去を行うことができる．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{高密度クラウド構築設定値}に，\ref{写真のアラインメント}項の出力結果を用いた時の処理結果を\fref{高密度クラウド構築結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/dense_cloud.jpg}
           \subcaption{設定値}
           \label{高密度クラウド構築設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/dense_cloud.jpg}
           \subcaption{処理結果}
@@ -109,13 +109,13 @@
       \ref{高密度クラウド構築}項によって得られた高密度クラウドの点群からポリゴンメッシュの構築を行う．本処理の設定値を\fref{メッシュ構築設定値}に，\ref{高密度クラウド構築}項の出力結果を用いた時の処理結果を\fref{メッシュ構築結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/mesh.jpg}
           \subcaption{設定値}
           \label{メッシュ構築設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/mesh.jpg}
           \subcaption{処理結果}
@@ -130,13 +130,13 @@
       \ref{メッシュ構築}項によって生成元の点群の色が割り当てられるが，頂点の色のみが対象であるため解像度が低い．そのため，本処理によって入力画像のテクスチャをメッシュに貼り付ける．また，\ref{オルソモザイク構築}項の処理においても利用される．本処理の設定値を\fref{テクスチャ構築設定値}に，\ref{メッシュ構築}項の出力結果を用いた時の処理結果を\fref{テクスチャ構築結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/texture.jpg}
           \subcaption{設定値}
           \label{テクスチャ構築設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/texture.jpg}
           \subcaption{処理結果}
@@ -161,16 +161,17 @@
     \subsection{DEM構築}
       \label{DEM構築}
       \ref{Z軸指定}項によって得られた直下視点の三次元モデルを投影することよって直下視の投影方向にてDEMデータの構築を行う．ここで，ソースデータに「高密度クラウド」を指定することで，より精度の高いDEMデータを構築することができる．一般的な測量手法では，地上基準点（GCP）やExifタグ\footnote{写真の撮影日時やカメラの機種名，絞りやISO感度等のカメラの設定値等のメタデータ}によりスケールや位置情報を埋め込むが，本研究でのヘリコプター空撮画像ではこれらが利用できないため，得られる標高値はモデル内での相対的な値となる．本処理の設定値を\fref{DEM構築設定値}に，\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{DEM構築結果}に示す．
+
       また，処理名称は「DEM構築」であるが，本研究では植生や建物の標高値を含まない数値標高モデルのことを「DEM」，植生や建物の標高値を含む数値標高モデルのことを「DSM」と呼称する．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/dem.jpg}
           \subcaption{設定値}
           \label{DEM構築設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/dem.jpg}
           \subcaption{処理結果}
@@ -185,13 +186,13 @@
       \ref{DEM構築}項と同様，直下視点の三次元モデルを投影することよって直下視の投影方向にて，擬似的な直下視点画像であるオルソモザイク画像（以降，オルソ画像）を構築する．本処理の設定値を\fref{オルソモザイク構築設定値}に，\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{オルソモザイク構築結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/ortho.jpg}
           \subcaption{設定値}
           \label{オルソモザイク構築設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/ortho.jpg}
           \subcaption{処理結果}
@@ -208,9 +209,12 @@
 
 
     \subsection{リサンプリング}
+      \label{リサンプリング}
       災害前後の数値標高モデルの解像度が異なるためリサンプリング処理によって解像度を統一する．この処理によって\ref{土砂量推定}節にて災害前後の標高値差分を取ることが可能となる．災害前データとして用いる国土地理院提供のDEMのメッシュ解像度は5m或いは10m単位，本研究で用いるDSMのメッシュ解像度は数十cm単位であるため，災害前DEMに対し最も滑らかな画素補間法であるバイキュービック補間\cite{バイキュービック法}を行い拡大することによって解像度を統一する．
       
-      バイキュービック法による画素値$i(x,y)$は\fref{ピクセル図}に示すような，注目画素の周囲$4\times4$（16）画素に対し，\Fref{バイキュービック法1}を適用することによって得られる．ただし，注目画素の座標を$(x,y)$とし，\Fref{バイキュービック法2}，\Fref{バイキュービック法3}を満たす．なお，$a$の値は一般的には$-1$を取る．
+      バイキュービック法による画素値$i(x,y)$は\fref{ピクセル図}に示すような，注目画素の周囲$4\times4$（16）画素に対し，\Fref{バイキュービック法1}を適用することによって得られる．ただし，注目画素の座標を$(x,y)$とし，\Fref{バイキュービック法2}，\Fref{バイキュービック法3}を満たす．なお，$a$の値は一般的には$-1$を取る．\fref{入力DEM}のDEMに対しリサンプリング処理を行った結果を\fref{リサンプリング結果}に示す．
+
+      TODO: リサンプリング結果処理乗せる
 
       \begin{eqnarray}
         \label{バイキュービック法1}
@@ -264,11 +268,18 @@
         \label{ピクセル図}
       \end{figure}
 
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/method/mesh.png}
+        \caption{リサンプリング結果}
+        \label{リサンプリング結果}
+      \end{figure}
+
 
     \subsection{傾斜角度・傾斜方位の算出}
     TODO: Hornの公式 or Zevenbergかも
 
-      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{入力DEM}のDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度図}と\fref{傾斜方位図}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとし，白色は欠損領域とする．
+      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{リサンプリング}のDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度図}と\fref{傾斜方位図}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとし，白色は欠損領域とする．
 
       \begin{equation}
         \label{傾斜角度}
@@ -307,6 +318,7 @@
 
       FIXME: カラーランプをTurboに変更するかも
       TODO: カラーバー入れるかも
+      FIXME: リサンプリング後の画像に変更
 
       \begin{figure}[t]
         \begin{minipage}[c]{0.329\hsize}
@@ -381,13 +393,13 @@
       なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像の一部を切り取った画像を\fref{Mean−Shift法入力}に，Mean-Shift法を適用した結果を\fref{Mean-Shift法出力}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/trimming.png}
           \subcaption{入力画像}
           \label{Mean−Shift法入力}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/mean-shift.png}
           \subcaption{出力画像}
@@ -402,12 +414,12 @@
       \ref{建物領域の検出}項にて建物領域を検出する際に，領域の面積や周囲長といった値が必要である．これらの領域データは通常，ラベリング処理\footnote{二値画像中の連結した領域を抽出する解析手法であり，各領域の面積，周囲長，重心座標等を取得できる}によって取得可能である．しかし，単純に二値化を行った際に，\fref{建物領域の二値化例}に示すように複数の建物領域を同一の領域として検出してしまい，建物領域の面積や周囲長が正しく取得できない．よって，本研究では{オルソ画像の領域分割}項の出力結果に対してカラーラベリング（本研究では本処理をカラーラベリングと呼称する）を行い，領域を区別して検出できるようにする．カラーラベリング処理の通常ラベリング処理との相違点として，色相情報が同一である近傍の連結画素を領域として抽出する．\fref{オルソ画像の領域分割}項の出力画像に対しカラーラベリングを適用した際のラベル画像を\fref{カラーラベリング結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/building_ortho.png}
           \subcaption{オルソ画像における建物領域}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/building_bin.png}
           \subcaption{二値化結果}
@@ -443,20 +455,20 @@
         \label{異質度}
         dissimilarity = \sum_{i=0}^{255} \sum_{j=0}^{255} (i,j) |i-j|
       \end{equation}
-      
+
       また，国土地理院の提供する建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域の検出結果に建物ポリゴンを重畳し，建物候補領域に建物ポリゴンのピクセルが50\%以上含まれる場合，その建物候補領域を建物領域として検出する．使用した建物ポリゴン画像を\fref{建物ポリゴン}に，\fref{オルソ画像の領域分割}項の入力画像より建物領域を検出した例を\fref{建物領域検出結果}に示す．なお，\ref{土砂領域マスク画像作成}節にて得る土砂領域マスク画像を適用済みの結果であり，植生領域を除去済みであるとする．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
           \subcaption{建物ポリゴン}
           \label{建物ポリゴン}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/building.png}
-          \subcaption{建物領域の検出結果（赤：建物領域）}
+          \subcaption{建物領域の検出結果（赤）}
           \label{建物領域検出結果}
         \end{minipage}
         \caption{建物領域の検出}
@@ -471,18 +483,18 @@
 
     \subsection{ジオリファレンサ}
       \label{ジオリファレンサ}
-      \ref{入力データ}節で用いる空撮画像において，本研究では位置情報が埋め込まれていない画像群の例が存在する．この場合，\ref{DEM構築}項で前述したようにオルソ画像や災害後DSMは位置情報を持たない．しかし，後述の処理でオルソ画像や災害後DSMと，災害前DEM等の位置情報が対応付けられいてる必要がある．そのため，災害後DSMに位置情報が付与されていない場合，QGISのジオリファレンサ機能を利用して位置合わせを行う．ジオリファレンサとは，位置情報を持たないラスタデータ\footnote{画像同様に格子状のピクセル構造を持つデータ構造}に任意の位置情報を付与する手法であり，この処理によって位置情報を持たないオルソ画像や災害後DSMを地図上に重畳でき，災害前DEM等と位置情報の対応付けが可能となる．
+      \ref{入力データ}節で用いる空撮画像において，本研究では位置情報が埋め込まれていない画像群の例が存在する．この場合，オルソ画像や災害後DSMは位置情報を持たないため地図上への重畳ができない．しかし，後述の処理でオルソ画像や災害後DSMと，災害前DEM等の位置情報が対応付けられいてる必要がある．そのため，災害後DSMに位置情報が付与されていない場合，QGISのジオリファレンサ機能を利用して位置合わせを行う．ジオリファレンサとは，位置情報を持たないラスタデータ\footnote{画像同様に格子状のピクセル構造を持つデータ構造}に任意の位置情報を付与する手法であり，この処理によって位置情報を持たないオルソ画像や災害後DSMを地図上に重畳でき，災害前DEM等と位置情報の対応付けが可能となる．
 
       QGISにてジオリファレンサを起動し，ラスタデータと地図上のランドマークの対応点付けを行う．ラスタデータのランドマークを選択し，地図上の同一のランドマークを選択する．最低4箇所の対応付けが必要であり，ラスタデータと地図上の対応するランドマークの対応付け箇所が多いほど精度が向上する．本処理の設定値を\fref{ジオリファレンサ設定値}に，\ref{DEM構築}項の出力結果を国土地理院の標準地図\cite{標準地図}上に重畳した結果を\fref{ジオリファレンサ結果}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/georeferencer.png}
           \subcaption{設定値}
           \label{ジオリファレンサ設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/georeferencer.png}
           \subcaption{DSMの重畳結果}
@@ -568,12 +580,12 @@
       \end{eqnarray}
       
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/lab-a.png}
           \subcaption{a*値画像}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/lab-b.png}
           \subcaption{b*値画像}
@@ -606,17 +618,17 @@
       \begin{minipage}[c]{0.329\hsize}
         \centering
         \includegraphics[width=4.5cm]{image/exmaple/sediment_candidate.png}
-        \subcaption{土砂候補領域の検出結果}
+        \subcaption{土砂候補領域の検出結果（赤）}
       \end{minipage}
       \begin{minipage}[c]{0.329\hsize}
         \centering
         \includegraphics[width=4.5cm]{image/exmaple/vegetation.png}
-        \subcaption{植生領域の検出結果}
+        \subcaption{植生領域の検出結果（緑）}
       \end{minipage}
       \begin{minipage}[c]{0.329\hsize}
         \centering
         \includegraphics[width=4.5cm]{image/exmaple/sediment.png}
-        \subcaption{土砂領域の検出結果}
+        \subcaption{土砂領域の検出結果（赤）}
       \end{minipage}
       \caption{土砂領域の検出結果}
       \label{土砂領域検出結果}
@@ -631,12 +643,12 @@
       クロージング処理とは二値画像において膨張処理\footnote{注目画素の8近傍に白画素がある場合，注目画素を白色にする処理}を複数回行った後，収縮処理\footnote{注目画素の8近傍に黒画素がある場合，注目画素を黒色にする処理}を同回数行い，画像中の穴を除去する処理である．\ref{土砂領域検出}項の検出結果の二値画像におけるクロージング処理の適用例を\fref{クロージング処理}に示す．
 
       \begin{figure}[t]
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/sediment_bin.png}
           \subcaption{土砂領域の二値画像}
         \end{minipage}
-        \begin{minipage}[c]{0.5\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/closing.png}
           \subcaption{出力画像}

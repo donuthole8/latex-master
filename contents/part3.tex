@@ -2,206 +2,643 @@
   \section{実験環境}
     本研究における実験環境を\tref{実験環境}に示す．
 
-    \begin{table}[b]
+    TODO: もし分かればMetashapeの実験環境を記述
+
+    \begin{table}[t]
       \centering
       \caption{実験環境}
       \label{実験環境}
-      \begin{tabular}{cc}
+      \begin{tabular}{ll}
         \hline
+        項目 & 詳細 \\
+        \hline \hline
         CPU & Apple M1 \\
         メモリ & 16.00GB \\
         OS & macOS Monterey 12.4 \\
         使用言語 & Python 3.9.1 \\
         コンパイラ & インタープリタ言語により未使用 \\
-        使用ライブラリ & OpenCV 4.5.5, GDAL 3.5.3, mpl(texture), pymeanshift\cite{PyMeanShift} \\ 
+        使用ライブラリ & OpenCV 4.5.5, GDAL 3.5.3, pymeanshift\cite{PyMeanShift} \\ 
         使用ソフトウェア & Metashape 1.6.4, QGIS 3.22.13 \\ \hline 
       \end{tabular}
     \end{table}
 
 
-
   \section{入力データ}
-    本研究では災害後空撮画像として国立研究開発法人防災科学技術研究所様に貸与頂いた平成30年7月豪雨における広島県坂町小屋浦のドローン空撮画像\cite{}，国土地理院提供のXXX航空画像，災害前DEMとして災害前DEMを使用して実験を行った．空撮画像の詳細を\tref{空撮画像1}から\tref{空撮画像3}，災害前の詳細を\tref{災害前DEM1}から\tref{災害前DEM（実験2）DEM3}に，基盤地図情報の詳細を\tref{基盤地図情報1}から\tref{基盤地図情報3}に示す．
+    \label{入力データ（実験）}
+    本研究では災害後空撮画像として防災科学技術研究所提供のドローン空撮画像\cite{防災科研空撮画像}（実験1），国土地理院提供のヘリコプター空撮画像\cite{国土地理院空撮画像1,国土地理院空撮画像2}（実験2，実験3），災害前DEMとして国土地理院DEM，国土地理院の建物ポリゴンを使用して実験を行った．実験1は平成30年7月豪雨のドローン空撮画像であり，防災科学技術研究所より貸与頂いた．実験2，実験3はそれぞれ平成30年7月豪雨と熱海市伊豆山土石流災害のヘリコプター空撮画像であり，国土地理院の公開している災害情報ページより取得した．災害前DEM及び建物ポリゴンについても，国土地理院の公開しているダウンロードページより取得した．使用したデータの詳細を\tref{使用空撮画像}から\tref{使用建物ポリゴン}に示す．
 
-    参考：雨宮さん4例，岩下さん6例，中山さん3例，竹内さん3例，Ave. 4例
+    また，使用した災害後空撮画像の内3例を\fref{空撮画像1}から\fref{空撮画像3}に，災害前DEM及び建物ポリゴンを\fref{基盤地図情報（実験1）}から\fref{基盤地図情報（実験3）}に示す．なお，災害前DEM及び建物ポリゴンは後述で切り抜いた災害後DSM及びオルソ画像に合わせてトリミングを行った．
 
-    \begin{table}[b]
+    \begin{table}[t]
       \centering
       \caption{空撮画像（実験1）}
-      \label{空撮画像1}
-      \begin{tabular}{cc}
+      \label{使用空撮画像}
+      \begin{tabular}{ll}
         \hline
-        災害名称 &  \\
-        撮影箇所 &  \\
+        項目 & 詳細 \\
+        \hline \hline
+        災害名称 & 平成30年7月豪雨小屋浦 \\
+        撮影箇所 & 広島県安芸郡坂町 \\
         撮影機体 & ドローン \\
-        撮影日時 &  \\
-        使用枚数 & \\
-        解像度 &  \\
-        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
+        撮影日時 & 2018年7月10日 \\
+        使用枚数 & 267枚 \\
+        解像度 & 3000 $\times$ 4000 画素 \\
+        提供 & 防災科学技術研究所 \\ \hline
       \end{tabular}
     \end{table}
 
-    \begin{table}[b]
+    \begin{table}[t]
       \centering
       \caption{空撮画像（実験2）}
+      \begin{tabular}{ll}
+        \hline
+        項目 & 詳細 \\
+        \hline \hline
+        災害名称 & 平成30年7月豪雨 \\
+        撮影箇所 & 広島県三原市三原北部 \\
+        撮影機体 & ヘリコプター \\
+        撮影日時 & 2018年7月15日 \\
+        使用枚数 & 39枚 \\
+        解像度 & 3584 $\times$ 3932 画素 \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[t]
+      \centering
+      \caption{空撮画像（実験3）}
+      \begin{tabular}{ll}
+        \hline
+        項目 & 詳細 \\
+        \hline \hline
+        災害名称 & 熱海市伊豆山土石流災害 \\
+        撮影箇所 & 静岡県熱海市伊豆山 \\
+        撮影機体 & ヘリコプター \\
+        撮影日時 & 2021年7月6日 \\
+        使用枚数 & 39枚 \\
+        解像度 & 2828 $\times$ 4328 画素 \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[t]
+      \centering
+      \caption{災害前DEM（実験1-3）}
+      \label{使用災害前DEM}
+      \begin{tabular}{ll}
+        \hline
+        項目 & 詳細 \\
+        \hline \hline
+        名称 & 基盤地図情報数値標高モデル \\
+        作成日時 & 
+        \begin{tabular}{l}
+        2016年10月01日（実験1） \\
+        2016年10月01日（実験2） \\
+        2019年07月01日（実験3） \\
+        \end{tabular} \\
+        データ形式 & 5m（標高） \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[t]
+      \centering
+      \caption{建物ポリゴン（実験1-3）}
+      \label{使用建物ポリゴン}
+      \begin{tabular}{ll}
+        \hline
+        項目 & 詳細 \\
+        \hline \hline
+        名称 & 基盤地図情報基本項目建築物 \\
+        作成日時 &
+        \begin{tabular}{l}
+        2022年07月01日（実験1） \\
+        2022年10月01日（実験2） \\
+        2022年10月01日（実験3） \\
+        \end{tabular} \\
+        縮尺 & 2500分の1 \\
+        提供 & 国土地理院 \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/input1.jpg}
+        \subcaption{入力画像例1}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/input2.jpg}
+        \subcaption{入力画像例2}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/input3.jpg}
+        \subcaption{入力画像例3}
+      \end{minipage}
+      \caption{災害後空撮画像の例（実験1）}
+      \label{空撮画像1}
+    \end{figure}
+
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input2-1.jpg}
+        \subcaption{入力画像例1}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input2-2.jpg}
+        \subcaption{入力画像例2}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input2-3.jpg}
+        \subcaption{入力画像例3}
+      \end{minipage}
+      \caption{災害後空撮画像の例（実験2）}
       \label{空撮画像2}
-      \begin{tabular}{cc}
-        \hline
-        災害名称 &  \\
-        撮影箇所 &  \\
-        撮影機体 & ドローン \\
-        撮影日時 &  \\
-        使用枚数 & \\
-        解像度 &  \\
-        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
-      \end{tabular}
-    \end{table}
+    \end{figure}
 
-    \begin{table}[b]
-      \centering
-      \caption{空撮画像3}
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input3-1.jpeg}
+        \subcaption{入力画像例1}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input3-2.jpeg}
+        \subcaption{入力画像例2}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/inputs/input3-3.jpeg}
+        \subcaption{入力画像例3}
+      \end{minipage}
+      \caption{災害後空撮画像の例（実験3）}
       \label{空撮画像3}
-      \begin{tabular}{cc}
-        \hline
-        災害名称 &  \\
-        撮影箇所 &  \\
-        撮影機体 & ドローン \\
-        撮影日時 &  \\
-        使用枚数 & \\
-        解像度 &  \\
-        提供 & 国立研究開発法人防災科学技術研究所 \\ \hline
-      \end{tabular}
-    \end{table}
+    \end{figure}
 
-    TODO: 日時・箇所だけ付番してまとめて良いかも
-    \begin{table}[b]
-      \centering
-      \caption{災害前DEM（実験1）}
-      \label{災害前DEM1}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 数値標高モデル？ \\
-        作成箇所 &  \\
-        作成日時 &  \\
-        解像度 & \\
-        メッシュサイズ &  \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/inputs/dem1.png}
+        \subcaption{災害前DEM}
+      \end{minipage}
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
+        \subcaption{建物ポリゴン}
+      \end{minipage}
+      \caption{建物領域の検出}
+      \label{基盤地図情報（実験1）}
+    \end{figure}
 
-    \begin{table}[b]
-      \centering
-      \caption{災害前DEM（実験2）}
-      \label{災害前DEM2}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 数値標高モデル？ \\
-        作成箇所 &  \\
-        作成日時 &  \\
-        解像度 & \\
-        メッシュサイズ &  \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
+        \subcaption{災害前DEM}
+      \end{minipage}
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building.png}
+        \subcaption{建物ポリゴン}
+      \end{minipage}
+      \caption{建物領域の検出}
+      \label{基盤地図情報（実験2）}
+    \end{figure}
 
-    \begin{table}[b]
-      \centering
-      \caption{災害前DEM（実験3）}
-      \label{災害前DEM3}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 数値標高モデル？ \\
-        作成箇所 &  \\
-        作成日時 &  \\
-        解像度 & \\
-        メッシュサイズ &  \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
-
-    \begin{table}[b]
-      \centering
-      \caption{基盤地図情報（実験1）}
-      \label{基盤地図情報1}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 基盤地図情報基本項目 \\
-        作成箇所 & 建築物の外周線 \\
-        作成日時 &  \\
-        縮尺 & \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
-
-
-    \begin{table}[b]
-      \centering
-      \caption{基盤地図情報（実験2）}
-      \label{基盤地図情報2}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 基盤地図情報基本項目 \\
-        作成箇所 & 建築物の外周線 \\
-        作成日時 &  \\
-        縮尺 & \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
-
-    \begin{table}[b]
-      \centering
-      \caption{基盤地図情報（実験3）}
-      \label{基盤地図情報3}
-      \begin{tabular}{cc}
-        \hline
-        名称 & 基盤地図情報基本項目 \\
-        作成箇所 & 建築物の外周線 \\
-        作成日時 &  \\
-        縮尺 & \\
-        提供 & 国土地理院 \\ \hline
-      \end{tabular}
-    \end{table}
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
+        \subcaption{災害前DEM}
+      \end{minipage}
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building.png}
+        \subcaption{建物ポリゴン}
+      \end{minipage}
+      \caption{建物領域の検出}
+      \label{基盤地図情報（実験3）}
+    \end{figure}
 
 
 
   \section{実験結果}
-    \subsection{入力データ}
-    入力データとして利用した空撮画像の一部，災害前DEMを\fref{}から\fref{}に示す．
-    % 入力データとして267枚のドローン空撮画像と災害前DEMを利用した（図2, 図3）．
-  
-
     \subsection{三次元復元}
-      まず，空撮画像に三次元復元を適用することにより生成した三次元モデルよりDSMとオルソ画像を作成し，標高値補正を行った．標高値補正済み災害後DSMを図4に，オルソ画像を図5に示す．
+      \label{三次元復元}
+      \ref{入力データ（実験）}節の災害後空撮画像を入力とし，Metashapeにて三次元復元処理を行った．実験1-3における写真のアラインメント，高密度クラウド構築，メッシュ構築，テクスチャ構築，Z軸指定，DEM構築，オルソモザイク構築の各処理結果を\fref{三次元復元処理結果（実験1）}から\fref{三次元復元処理結果（実験2）}に示す．
+      
+    \begin{figure}[t]
+      \begin{tabular}{cc}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/alignment.jpg}
+          \subcaption{写真のアラインメント結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dense_cloud.jpg}
+          \subcaption{高密度クラウド構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/mesh.jpg}
+          \subcaption{メッシュ構築結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/texture.jpg}
+          \subcaption{テクスチャ構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/view_reset.jpg}
+          \subcaption{Z軸指定結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dem.jpg}
+          \subcaption{DEM構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/ortho.jpg}
+          \subcaption{オルソモザイク構築結果}
+        \end{minipage}
+      \end{tabular}
+      \caption{三次元復元結果（実験1）}
+      \label{三次元復元結果（実験1）}
+    \end{figure}
+
+    \begin{figure}[t]
+      \begin{tabular}{cc}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/alignment.jpg}
+          \subcaption{写真のアラインメント結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dense_cloud.jpg}
+          \subcaption{高密度クラウド構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/mesh.jpg}
+          \subcaption{メッシュ構築結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/texture.jpg}
+          \subcaption{テクスチャ構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/view_reset.jpg}
+          \subcaption{Z軸指定結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dem.jpg}
+          \subcaption{DEM構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/ortho.jpg}
+          \subcaption{オルソモザイク構築結果}
+        \end{minipage}
+      \end{tabular}
+      \caption{三次元復元結果（実験2）}
+    \end{figure}
+
+    \begin{figure}[t]
+      \begin{tabular}{cc}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/alignment.jpg}
+          \subcaption{写真のアラインメント結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dense_cloud.jpg}
+          \subcaption{高密度クラウド構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/mesh.jpg}
+          \subcaption{メッシュ構築結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/texture.jpg}
+          \subcaption{テクスチャ構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/view_reset.jpg}
+          \subcaption{Z軸指定結果}
+        \end{minipage} &
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dem.jpg}
+          \subcaption{DEM構築結果}
+        \end{minipage} \\
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/ortho.jpg}
+          \subcaption{オルソモザイク構築結果}
+        \end{minipage}
+      \end{tabular}
+      \caption{三次元復元結果（実験3）}
+      \label{三次元復元結果（実験3）}
+    \end{figure}
 
 
     \subsection{災害前DEMの前処理}
+      \ref{入力データ（実験）}節の災害前DEMを入力とし，災害前DEMの前処理を行った．実験1-3におけるリサンプリング，傾斜角度，傾斜方位の各処理結果を\fref{災害前DEMの前処理（実験1）}から\fref{災害前DEMの前処理（実験3）}に示す．
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{リサンプリング結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{傾斜角度図}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{傾斜方位図}
+        \end{minipage}
+        \caption{災害前DEMの前処理結果（実験1）}
+        \label{災害前DEMの前処理結果（実験1）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{リサンプリング結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{傾斜角度図}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{傾斜方位図}
+        \end{minipage}
+        \caption{災害前DEMの前処理結果（実験2）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{リサンプリング結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{傾斜角度図}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{傾斜方位図}
+        \end{minipage}
+        \caption{災害前DEMの前処理結果（実験3）}
+        \label{災害前DEMの前処理結果（実験3）}
+      \end{figure}
 
 
+    \subsection{災害後オルソ画像の前処理}
+      \label{災害後オルソ画像の前処理}
+      \ref{三次元復元}項のオルソ画像と\ref{入力データ（実験）}の建物ポリゴンを入力とし，災害後オルソ画像の前処理を行った．実験1-3におけるオルソ画像の領域分割結果，カラーラベリングのラベル画像，建物領域検出の各処理結果を\fref{災害後オルソ画像の前処理（実験1）}から\fref{災害後オルソ画像の前処理結果（実験3）}に示す．
 
-    \subsection{領域データの抽出}
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+        \subcaption{領域分割結果}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+        \subcaption{カラーラベリングのラベル画像}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+        \subcaption{建物領域検出結果（赤）}
+      \end{minipage}
+      \caption{災害後オルソ画像の前処理結果（実験1）}
+      \label{災害後オルソ画像の前処理結果（実験1）}
+    \end{figure}
+
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+        \subcaption{領域分割結果}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+        \subcaption{カラーラベリングのラベル画像}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+        \subcaption{建物領域検出結果（赤）}
+      \end{minipage}
+      \caption{災害後オルソ画像の前処理結果（実験3）}      
+    \end{figure}
+
+    \begin{figure}[t]
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+        \subcaption{領域分割結果}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+        \subcaption{カラーラベリングのラベル画像}
+      \end{minipage}
+      \begin{minipage}[c]{0.329\hsize}
+        \centering
+        \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+        \subcaption{建物領域検出結果（赤）}
+      \end{minipage}
+      \caption{災害後オルソ画像の前処理結果（実験3）}
+      \label{災害後オルソ画像の前処理結果（実験3）}
+    \end{figure}
+
+
+    \subsection{災害後DSMの前処理}
+      \ref{三次元復元}項の災害後DSMを入力とし，災害後DSMの前処理を行った．実験1-3におけるジオリファレンサ，建物領域の標高値補正，災害後DSMの正規化の各処理結果を\fref{災害後DSMの前処理（実験1）}から\fref{災害後DSMの前処理結果（実験3）}に示す．なお，実験1については位置情報が埋め込まれている画像を用いたため，ジオリファレンサを行わず自動で地図上への重畳が行われる．
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{ジオリファレンサ結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{建物領域の標高値補正結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{災害後DSMの正規化結果}
+        \end{minipage}
+        \caption{災害後DSMの前処理結果（実験1）}
+        \label{災害後DSMの前処理結果（実験1）}
+      \end{figure}
+  
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{ジオリファレンサ結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{建物領域の標高値補正結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{災害後DSMの正規化結果}
+        \end{minipage}
+        \caption{災害後DSMの前処理結果（実験2）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/dem_gsi.png}
+          \subcaption{ジオリファレンサ結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \subcaption{建物領域の標高値補正結果}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \subcaption{災害後DSMの正規化結果}
+        \end{minipage}
+        \caption{災害後DSMの前処理結果（実験3）}
+        \label{災害後DSMの前処理結果（実験3）}
+      \end{figure}
     
 
-    
-    \subsection{建物領域の標高値補正 or 災害後DSMの前処理}
-    
-
-    
     \subsection{土砂領域マスク画像作成}
-      その後，作成した土砂マスクを図6に示す．
+      \label{土砂領域マスク画像作成（実験）}
+      \ref{災害後オルソ画像の前処理}項のオルソ画像の領域分割結果を入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成（実験1）}から\fref{土砂領域マスク画像作成（実験3）}に示す．
+
+      \begin{figure}[t]
+        \begin{tabular}{cc}
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/clahe.png}
+            \subcaption{ヒストグラム均一化結果}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment_candidate.png}
+            \subcaption{土砂候補領域検出結果（赤）}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/vegetation.png}
+            \subcaption{植生領域検出結果（緑）}
+          \end{minipage} &
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
+            \subcaption{土砂領域検出結果（赤）}
+          \end{minipage} \\
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/exmaple/normed_mask.png}
+            \subcaption{土砂領域マスク画像}
+          \end{minipage} &
+        \end{tabular}
+        \caption{土砂領域マスク画像作成（実験1）}
+        \label{土砂領域マスク画像作成（実験1）}
+      \end{figure}
 
 
     \subsection{土砂量推定}
-      最後に，土砂量図と土砂移動図を図7，図8に示す．ここで図8の矢印は土砂位の移動方向を示す．
+      \ref{災害前DEMの前処理}項，\ref{災害後DSMの前処理}項，\ref{土砂領域マスク画像作成（実験）}項の出力結果より土砂量推定を行った．土砂量推定結果を\fref{土砂量推定（実験1）}から\fref{土砂量推定（実験3）}に示す．これらにおける疑似カラーバーを\fref{}に示す．
+      
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂量推定結果（実験1）}
+        \label{土砂量推定結果（実験1）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂量推定結果（実験2）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂量推定結果（実験3）}
+        \label{土砂量推定結果（実験3）}
+      \end{figure}
 
 
     \subsection{土砂移動推定}
+      \ref{}項，\ref{}項，\ref{}項の出力結果より土砂移動推定を行った．土砂移動推定結果を\fref{土砂移動推定（実験1）}から\fref{土砂移動推定（実験3）}に示す．ここで，矢印は土砂移動の水平移動方向を示す．
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂移動推定結果（実験1）}
+        \label{土砂移動推定結果（実験1）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂移動推定結果（実験2）}
+      \end{figure}
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/difference.png}
+        \caption{土砂移動推定結果（実験3）}
+        \label{土砂移動推定結果（実験3）}
+      \end{figure}
 
 
 
   \section{精度評価}
     メッシュ毎の土砂移動の方向についての精度評価を行った．
 
-    まず，国土地理院の空中写真による被災前後の比較\cite{使用データ3}にて目視判読にて土砂マスクの土砂部分に限定し正解データを作成した（\fref{}）． その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより精度評価を行った（\Fref{精度評価}）．answerは正解角度データ，resultは土砂移動推定結果による角度データ，accuracyは精度を示す．
+    まず，国土地理院の空中写真による被災前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}にて目視判読にて土砂マスクの土砂部分に限定し正解データを作成した（\fref{}）． その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより精度評価を行った（\Fref{精度評価}）．answerは正解角度データ，resultは土砂移動推定結果による角度データ，accuracyは精度を示す．
     
     \begin{equation}
       \label{精度評価}
