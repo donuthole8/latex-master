@@ -214,8 +214,6 @@
       
       バイキュービック法による画素値$i(x,y)$は\fref{ピクセル図}に示すような，注目画素の周囲$4\times4$（16）画素に対し，\Fref{バイキュービック法1}を適用することによって得られる．ただし，注目画素の座標を$(x,y)$とし，\Fref{バイキュービック法2}，\Fref{バイキュービック法3}を満たす．なお，$a$の値は一般的には$-1$を取る．\fref{入力DEM}のDEMに対しリサンプリング処理を行った結果を\fref{リサンプリング結果}に示す．
 
-      TODO: リサンプリング結果処理乗せる
-
       \begin{eqnarray}
         \label{バイキュービック法1}
         i(x,y) = 
@@ -269,9 +267,17 @@
       \end{figure}
 
       \begin{figure}[t]
-        \centering
-        \includegraphics[width=9cm]{image/method/mesh.png}
-        \caption{リサンプリング結果}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dem_gsi.png}
+          \subcaption{災害前DEM}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
+          \subcaption{リサンプリング結果}
+        \end{minipage}
+        \caption{バイキュービック法によるリサンプリング}
         \label{リサンプリング結果}
       \end{figure}
 
@@ -279,7 +285,7 @@
     \subsection{傾斜角度・傾斜方位の算出}
     TODO: Hornの公式 or Zevenbergかも
 
-      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{リサンプリング}のDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度図}と\fref{傾斜方位図}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとし，白色は欠損領域とする．
+      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{リサンプリング結果}のリサンプリング済みDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度・傾斜方位図}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとし，白色は欠損領域とする．
 
       \begin{equation}
         \label{傾斜角度}
@@ -318,7 +324,22 @@
 
       FIXME: カラーランプをTurboに変更するかも
       TODO: カラーバー入れるかも
-      FIXME: リサンプリング後の画像に変更
+
+      
+      \begin{figure}[t]
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dem_gsi.png}
+          \subcaption{傾斜角度図}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
+          \subcaption{傾斜方位図}
+        \end{minipage}
+        \caption{傾斜角度・傾斜方位の算出}
+        \label{傾斜角度・傾斜方位図}
+      \end{figure}
 
       \begin{figure}[t]
         \begin{minipage}[c]{0.329\hsize}
@@ -447,15 +468,6 @@
         C = \dfrac{4 \pi S} {L^2} 
       \end{equation}
 
-      その後，テクスチャ特徴による分類を行うことによって建物領域を抽出する．建物領域の屋根部分は均一であるという特徴を持つため，ある領域内の画素の不均一性を示す指標である異質度（dissimilarity）\cite{異質度}を導入する．異質度\Fref{異質度}による閾値処理を行うことによって，建物領域を抽出する．$P(i,j)$は$(i,j)$における画素値，$dissimilarity$は異質度を示す．
-
-      TODO: 使用する場合はもう少し詳細に（概念図も追加）
-
-      \begin{equation}
-        \label{異質度}
-        dissimilarity = \sum_{i=0}^{255} \sum_{j=0}^{255} (i,j) |i-j|
-      \end{equation}
-
       また，国土地理院の提供する建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域の検出結果に建物ポリゴンを重畳し，建物候補領域に建物ポリゴンのピクセルが50\%以上含まれる場合，その建物候補領域を建物領域として検出する．使用した建物ポリゴン画像を\fref{建物ポリゴン}に，\fref{オルソ画像の領域分割}項の入力画像より建物領域を検出した例を\fref{建物領域検出結果}に示す．なお，\ref{土砂領域マスク画像作成}節にて得る土砂領域マスク画像を適用済みの結果であり，植生領域を除去済みであるとする．
 
       \begin{figure}[t]
@@ -478,7 +490,7 @@
 
   \section{災害後DSMの前処理}
     \label{災害後DSMの前処理}
-    DSMは建物・樹木等を含む数値標高モデルに対し，DEMは建物・樹木等の地表物の高さを含まないため，単純に災害前後の標高値差分を取った場合にずれが生じる．よって，ここでは災害後DSM全体及び建物領域に対し標高値補正を行う．
+    DSMは建物・樹木等を含む数値標高モデルに対し，DEMは建物・樹木等の地表物の高さを含まないため，単純に災害前後の標高値差分を取った場合にずれが生じる．よって，ここでは災害後DSMに対し補正を行う．
 
 
     \subsection{ジオリファレンサ}
@@ -504,15 +516,9 @@
       \end{figure}
 
 
-    \subsection{建物領域の標高値補正}
-      TODO: 他の手法使わない場合もう少し詳細に
-
-      \ref{建物領域の検出}項で抽出した建物領域に隣接する地表面領域の標高値を用いて建物領域の全画素の標高値を地表面領域の平均標高値に変換することで，建物領域の標高値を除去する．
-
-
     \subsection{災害後DSMの正規化}
       \label{災害後DSMの正規化}
-      次に，\ref{DEM構築}によって得られたDSMはモデル内での相対的な標高値であるため，災害前DEMと水平位置を対応付けし，\Fref{正規化}を適用することによって災害前DEMの最小値と最大値の範囲に正規化した絶対的な標高値を与える．$d_{a}$は災害後DSMの標高値，$d_{b}$は災害前DEMの標高値を示す．
+      次に，\ref{DEM構築}によって得られたDSMはモデル内での相対的な標高値であるため，災害前DEMと水平位置を対応付けし，\Fref{正規化}を適用することによって災害前DEMの最小値と最大値の範囲に正規化した絶対的な標高値を与える．$d_{a}$は災害後DSMの標高値，$d_{b}$は災害前DEMの標高値を示す．なお，後述の土砂領域マスク画像を前後の標高値モデルに適応してから行う．\ref{DEM構築}項の災害後DSMに対して正規化を行った結果を\fref{正規化結果}に示す．
 
       \begin{equation}
         \label{正規化}
@@ -521,6 +527,34 @@
           \dfrac{d_{a} - min(d_{a})} {max(d_{a}) - min(d_{a})}
       \end{equation}
 
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/normed_dsm.png}
+        \caption{災害後DSMの正規化結果}
+        \label{正規化結果}
+      \end{figure}
+
+
+    \subsection{建物領域の標高値補正}
+      TODO: 他の手法使わない場合もう少し詳細に
+
+      DSMは建物領域の標高値を含む標高値モデルであるため建物領域の標高値を除去することによって，災害前後の標高値差分を取った際の建物領域の影響を除去する．\ref{建物領域の検出}項で抽出した全建物領域に対し以下の処理を行う．
+
+      \begin{enumerate}
+        \setlength{\itemsep}{-5pt}
+        \item 注目している建物領域に隣接している領域を取得する
+        \item 取得した隣接領域が建物領域でない場合その領域を地表面領域とする
+        \item 注目している建物領域の全画素を地表面領域の平均値で置換する
+      \end{enumerate}
+
+      建物領域の標高値補正結果を\fref{建物領域の標高値補正結果}に示す．
+
+      \begin{figure}[t]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/removed_building.png}
+        \caption{建物領域の標高値補正結果}
+        \label{建物領域の標高値補正結果}
+      \end{figure}
 
 
   \section{土砂領域マスク画像作成}
