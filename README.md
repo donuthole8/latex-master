@@ -14,7 +14,7 @@ LaTex Workshop必要
 
 ```
 % eval "$(/usr/libexec/path_helper)"
-% latexmk hoge.tex
+% latexmk thesis.tex
 ```
 
 ## 備忘録
