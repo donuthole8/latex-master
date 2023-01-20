@@ -13,8 +13,8 @@
         CPU & AMD $\rm{Ryzen^{TM}}$ 7 1700 \\
         GPU & GeForce GTX 1080 \\
         メモリ & 32.00GB \\
-        OS & ubuntu? XX \\
-        使用ソフトウェア & Metashape 1.6.4\\ \hline 
+        OS & ubuntu? XX（研究室で調べて加筆します） \\
+        使用ソフトウェア & Metashape 1.6.4 \\ \hline 
       \end{tabular}
     \end{table}
 
@@ -594,10 +594,7 @@
 
     \subsection*{土砂領域マスク画像作成}
       \label{土砂領域マスク画像作成（実験）}
-      \ref{災害後オルソ画像の前処理}項のオルソ画像の領域分割結果を入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成結果（実験1）}から\fref{土砂領域マスク画像作成結果（実験3）}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
-      
-      急傾斜領域の検出結果
-
+      \ref{災害後オルソ画像の前処理}項のオルソ画像の領域分割結果を入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，急傾斜領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成結果（実験1）}から\fref{土砂領域マスク画像作成結果（実験3）}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
 
       \begin{figure}[t]
         \begin{tabular}{cc}
@@ -786,7 +783,7 @@
       \label{精度評価結果（実験1）}
       \begin{tabular}{cccc}
         \hline
-        \textbf{メッシュ番号（x,y）} & 結果角度[$^{\circ}$] & 正解角度[$^{\circ}$] & \textbf{精度} \\
+        \textbf{メッシュ番号（x,y）} & \textbf{結果角度[$^{\circ}$]} & \textbf{正解角度[$^{\circ}$]} & \textbf{精度} \\
         \hline  \hline
         1  (0,0)  & 270 & 170 & 0.443 \\
         6  (2,0)  & 280 & 160 & 0.333 \\
@@ -808,7 +805,7 @@
       \caption{精度評価結果（実験2）}
       \begin{tabular}{cccc}
         \hline
-        \textbf{メッシュ番号（x,y）} & 結果角度[$^{\circ}$] & 正解角度[$^{\circ}$] & \textbf{精度} \\
+        \textbf{メッシュ番号（x,y）} & \textbf{結果角度[$^{\circ}$]} & \textbf{正解角度[$^{\circ}$]} & \textbf{精度} \\
         \hline  \hline
         1  (0,0)  & XXX & XXX & XXX \\
         合計平均 & - & - & 0.730 \\
@@ -822,7 +819,7 @@
       \label{精度評価結果（実験3）}
       \begin{tabular}{cccc}
         \hline
-        \textbf{メッシュ番号（x,y）} & 結果角度[$^{\circ}$] & 正解角度[$^{\circ}$] & \textbf{精度} \\
+        \textbf{メッシュ番号（x,y）} & \textbf{結果角度[$^{\circ}$]} & \textbf{正解角度[$^{\circ}$]} & \textbf{精度} \\
         \hline  \hline
         1  (0,0)  & XXX & XXX & XXX \\
         合計平均 & - & - & 0.730 \\
@@ -833,7 +830,7 @@
 
 
   \section{考察}
-    \ref{実験結果}節の土砂移動推定の精度について，本手法の問題と有用性について考察を行った．
+    \ref{実験結果}節の土砂移動推定の精度について，本手法の問題について考察を行った．
 
 
     \subsection{土砂移動推定の精度について}
@@ -861,13 +858,57 @@
           \end{minipage}
           \caption{同一の建物の屋根を別々の領域として検出している例}
           \label{建物領域低精度例}
+        \end{figure}      
+
+
+      \subsubsection*{土砂マスク画像作成}
+        土砂領域を検出する際に，\fref{影領域}及び\fref{道路領域}に示すように，土砂領域中の影領域が未検出であり，無被害の道路領域を誤検出しているという問題がある．
+
+        影領域を検出するための手法として，影領域マスク画像の作成，影画素検出手法の利用が挙げられる．影領域は輝度値が小さいという特徴を持つため，\ref{L*a*b*表色系への変換}項で示した輝度（L*）で判別することが考えられる．ただし，植生領域や道路領域，特に植生にかかる影領域も同様の特徴を持つためこれらを土砂中の影領域として検出した場合，誤検出の原因となることも考えられる．また，太陽の位置及び方向や地形特徴を利用したModel-based methodsや，影の色相及び境界から検出を行うImage-based methods等を用いることが考えれる．なお，本研究で利用するデータはジオリファレンサ等により地理的情報を持つため，親和性が高い\cite{影領域検出}．
+
+        また，道路領域を検出する手法として，道路データの利用，テクスチャ解析が挙げられる．道路データは建物ポリゴン同様に国土地理院が提供しており，道路データの割合が多く，かつ，L*a*b*表色系のL*値の低い領域を検出することが考えられる．また，テクスチャ解析の指標である領域内の画素の不均一性を示す指標である異質度（dissimilarity）を用いることによって，画像表面における均一性が高い道路領域を検出事が考えれる．
+
+        \begin{figure}[t]
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/consideration/shadow.png}
+            \subcaption{土砂中の影領域}
+          \end{minipage}
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/consideration/sediment_shadow.png}
+            \subcaption{土砂領域検出結果}
+          \end{minipage}
+          \caption{土砂中の影領域の未検出例}
+          \label{影領域}
+        \end{figure}
+        
+        \begin{figure}[t]
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/consideration/road.png}
+            \subcaption{無被害の道路領域}
+          \end{minipage}
+          \begin{minipage}[c]{0.45\hsize}
+            \centering
+            \includegraphics[width=\linewidth]{image/consideration/sediment_road.png}
+            \subcaption{土砂領域検出結果}
+          \end{minipage}
+          \caption{無被害の道路領域の誤検出例}
+          \label{道路領域}
         \end{figure}
 
-      \subsubsection*{災害後DSMの正規化}
-      \subsubsection*{土砂領域マスク画像作成における精度}
-      \subsubsection*{土砂量推定における精度}
-      \subsubsection*{土砂移動推定における精度}
+
+      \subsubsection*{土砂量推定}
+        本手法の土砂量推定において，実験1の例ではなだらかな住宅地が多い実験例のため堆積領域の方が侵食領域より広域に分布するが，土砂領域の大部分が侵食領域となっている．考えられる原因として前述の建物領域の標高値補正の精度が低いことが挙げられるため，提案した改善手法によって精度向上が期待できる．また，災害後DSMの正規化において，災害前DEMの最小値と最大値で災害後DSMを正規化していることが原因である可能性がある．この影響により，災害後DSMの最大標高における土砂侵食領域の標高値，最小標高値における土砂堆積領域の標高値が考慮されていないと考えられる．Miuraの手法\cite{土砂量解析5}では約650箇所の土砂災害の統計解析により土石流における平均侵食深さは0.78mに近似できるとされているため，これらを加味した正規化手法を検討する．また，未補正の災害後DSM（\fref{災害後DSM（実験1）}）では，右上の土砂上流部よりも道路領域の標高値の方が高いため，最大標高値がこの道路領域を基準として正規化が行われた．よって，前述の道路領域の誤検出除去によって改善が可能である．
+        
+        \begin{figure}[t]
+          \centering
+          \includegraphics[width=9cm]{image/consideration/dsm.png}
+          \caption{災害後DSM（実験1）}
+          \label{災害後DSM（実験1）}
+        \end{figure}
 
 
-
-
+      \subsubsection*{土砂移動推定}
+        本手法の土砂移動推定において，前述した手法の改善を行うこと精度の向上が期待される．また，主に建物領域を含むメッシュにおいて精度が低いため建物領域の標高値補正の改善が最重要であると考える．
