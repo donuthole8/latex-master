@@ -8,7 +8,7 @@
       \label{実験環境}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         CPU & Apple M1 \\
         メモリ & 16.00GB \\
@@ -33,7 +33,7 @@
       \label{使用空撮画像}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         災害名称 & 平成30年7月豪雨小屋浦 \\
         撮影箇所 & 広島県安芸郡坂町 \\
@@ -50,7 +50,7 @@
       \caption{空撮画像（実験2）}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         災害名称 & 平成30年7月豪雨 \\
         撮影箇所 & 広島県三原市三原北部 \\
@@ -67,7 +67,7 @@
       \caption{空撮画像（実験3）}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         災害名称 & 熱海市伊豆山土石流災害 \\
         撮影箇所 & 静岡県熱海市伊豆山 \\
@@ -85,7 +85,7 @@
       \label{使用災害前DEM}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         名称 & 基盤地図情報数値標高モデル \\
         作成日時 & 
@@ -105,7 +105,7 @@
       \label{使用建物ポリゴン}
       \begin{tabular}{ll}
         \hline
-        項目 & 詳細 \\
+        \textbf{項目} & \textbf{詳細} \\
         \hline \hline
         名称 & 基盤地図情報基本項目建築物 \\
         作成日時 &
@@ -672,7 +672,7 @@
 
 
     \subsection{土砂移動推定}
-      \ref{}項，\ref{}項，\ref{}項の出力結果より土砂移動推定を行った．土砂移動推定結果を\fref{土砂移動推定（実験1）}から\fref{土砂移動推定（実験3）}に示す．ここで，矢印は土砂移動の水平移動方向を示す．
+      \ref{傾斜角度・傾斜方位の算出}項，\ref{災害後DSMの前処理}節，\ref{土砂領域マスク画像作成}節の出力結果より土砂移動推定を行った．土砂移動推定結果を\fref{土砂移動推定（実験1）}から\fref{土砂移動推定（実験3）}及び\fref{土砂移動推定メッシュ数}に示す．ここで，矢印は土砂移動の水平移動方向を示す．
 
       \begin{figure}[t]
         \centering
@@ -694,17 +694,83 @@
         \label{土砂移動推定結果（実験3）}
       \end{figure}
 
+      \begin{table}[b]
+        \centering
+        \caption{土砂移動推定メッシュ数}
+        \label{土砂移動推定メッシュ数}
+        \begin{tabular}{cccc}
+          \hline
+          \textbf{実験} & \textbf{縦} & \textbf{横} & \textbf{土砂マスク適用後メッシュ数} \\
+          \hline  \hline
+          実験1 & 13 & 12 & 57 \\
+          実験2 & XX & XX & XX \\
+          実験3 & XX & XX & XX \\ \hline
+        \end{tabular}
+      \end{table}
+
 
   \section{精度評価}
-    メッシュ毎の土砂移動の方向についての精度評価を行った．まず，国土地理院の空中写真による被災前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}にて目視判読にて土砂マスクの土砂部分に限定し\fref{正解データ}に示す正解データを作成した．その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより，\Fref{精度評価}に示す精度評価を行った．$answer$は正解角度データ，$result$は土砂移動推定結果による角度データ，$accuracy$は精度を示す．
-    
+    メッシュ毎の土砂移動の方向についての精度評価を行った．まず，国土地理院の空中写真による被災前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}にて目視判読にて土砂マスクの土砂部分に限定し\fref{正解データ}に示す正解データを作成した．その後，\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の角度データと正解角度データを比較することにより，\Fref{精度評価}に示す精度評価を行った．$answer$は正解角度データ，$result$は土砂移動推定結果による角度データ，$accuracy$は精度を示す．精度評価結果を\Fref{精度評価結果（実験1）}から\Fref{精度評価結果（実験3）}に示す．なお，メッシュ番号の$(x,y)$は画像左上部を起点とし，右下部であるほど値が大きくなるとし，代表的な10メッシュを記載した．
+
     \begin{equation}
       \label{精度評価}
       accuracy = 1 - |\dfrac{answer - result} {180}|
     \end{equation}
 
-    評価した結果，各メッシュの平均精度は0.759であった．
+    \begin{table}[b]
+      \centering
+      \caption{精度評価結果（実験1）}
+      \label{精度評価結果（実験1）}
+      \begin{tabular}{ccc}
+        \hline
+        \textbf{メッシュ番号（x,y）} & \textbf{精度} \\
+        \hline  \hline
+        1 (0,0) & 0.443 \\
+        6 (2,0) & 0.333 \\
+        12 (4,7) & 0.704 \\
+        18 (5,8) & 0.958 \\
+        24 (6,5) & 0.991 \\
+        30 (7,2) & 0.903 \\
+        36 (8,0) & 0.693 \\
+        42 (8,6) & 0.913 \\
+        48 (9,5) & 0.811 \\
+        54 (10,4) & 0.673 \\
+        合計 & 0.730 \\
+        \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{精度評価結果（実験2）}
+      \begin{tabular}{ccc}
+        \hline
+        \textbf{メッシュ番号（x,y）} & \textbf{縦} & \textbf{横} \\
+        \hline  \hline
+        実験1 & 13 & 12 \\
+        実験2 & XX & XX \\
+        実験3 & XX & XX \\ \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[b]
+      \centering
+      \caption{精度評価結果（実験3）}
+      \label{精度評価結果（実験3）}
+      \begin{tabular}{ccc}
+        \hline
+        \textbf{メッシュ番号（x,y）} & \textbf{縦} & \textbf{横} \\
+        \hline  \hline
+        実験1 & 13 & 12 \\
+        実験2 & XX & XX \\
+        実験3 & XX & XX \\ \hline
+      \end{tabular}
+    \end{table}
 
 
-    
+
   \section{考察}
+    \ref{実験}節の土砂移動推定の精度について，本手法の問題と有用性について考察を行った．
+
+
+    \subsection{}
