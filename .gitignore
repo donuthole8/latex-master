@@ -4,6 +4,9 @@ image/*
 ## PDF files:
 *.pdf
 
+## Test Folder
+LaTex-Test/*
+
 ## .DS_Store
 .DS_Store
 
