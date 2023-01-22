@@ -2,36 +2,34 @@
   \section{概要}
     本研究における提案手法概要図を\fref{提案手法概要図}に示す．
 
-    \begin{figure}[t]
+    \begin{figure}[tbp]
       \centering
       \includegraphics[width=12cm]{image/method/processing-flow.png}
       \caption{提案手法概要図}
       \label{提案手法概要図}
     \end{figure}
     
-    入力データとして，災害後の空撮画像複数枚，国土地理院の基盤地図情報数値標高モデル（以降，災害前DEM），基盤地図情報基本項目建築物データ\cite{基盤地図情報}（以降，建物ポリゴン）を用いる．
+    入力データとして，複数枚の災害後空撮画像，国土地理院の基盤地図情報数値標高モデル（以降，災害前DEM），基盤地図情報基本項目建築物データ\cite{基盤地図情報}（以降，建物ポリゴン）を用いる．
 
-    まず，災害後空撮画像の三次元復元を行うことによってDSM（以降，災害後DSM）とオルソ画像\footnote{擬似的に正射変換された直下視点画像}の作成を行う．次に，前処理によって，災害前DEMと災害後DSMを補正し，災害後オルソ画像より土砂マスク画像を作成する．最終的にこれらの画像情報と数値地形情報より統合解析を行い，標高値差分解析により土砂量図を，地形解析によって土砂移動図を出力する．
+    まず，災害後空撮画像の三次元復元を行うことによってDSM（以降，災害後DSM）とオルソ画像\footnote{擬似的に正射変換された直下視点画像}の作成を行う．次に，前処理によって，災害前DEMと災害後DSMを補正し，オルソ画像より土砂マスク画像を作成する．最終的にこれらの画像特徴と地形特徴による統合解析を行い，標高差分値解析により土砂量図を，地形解析によって土砂移動図を出力する．
 
 
 
   \section{入力データ}
     \label{入力データ}
-    入力データとして，複数枚の災害後空撮画像，災害前DEM，建物ポリゴンを用いる．災害前DEM，建物ポリゴンは\ref{オルソモザイク構築}項での出力結果をオープンGIS（Geographic Information System）である\footnote{地理情報システム}であるQGIS\cite{QGIS}上に重畳し，該当範囲をトリミングし利用する．位置情報を持たない場合は\ref{ジオリファレンサ}項の処理を行う．
-
-    入力で用いる災害後空撮画像は以下を満たしていることが望ましい．\fref{空撮画像例}に災害後空撮画像の例を示す．
+    入力データとして，複数枚の災害後空撮画像，災害前DEM，建物ポリゴンを用いる．入力で用いる災害後空撮画像は以下を満たしていることが望ましい．三次元復元を行える特徴量について，植生や水域等の特徴量が乏しい入力画像が多い場合，後述の三次元復元にて処理に失敗する可能性がある．\fref{空撮画像例}に災害後空撮画像の例を示す．
 
     \begin{itemize}
       \setlength{\itemsep}{-5pt}
       \item 撮影機体がヘリコプター，或いはドローンである
       \item 撮影角度が直下視点に近い
-      \item 空撮画像中に後述処理での三次元復元を行える程度の特徴量が存在する
-      \item 後述処理での三次元復元を行える程度の撮影枚数である
+      \item 後述処理での三次元復元を行える枚数である
+      \item 空撮画像中に後述処理での三次元復元を行える特徴量が存在する
       \item 植生の色相が緑色に近い
-      \item 夜間画像や雲領域を多く含んだ画像ではなく，明瞭に画像内の地物が目視で判読できる
+      \item 夜間画像や雲領域を多く含んだ画像ではなく，画像内の地表物が目視で判読できる
     \end{itemize}
 
-    \begin{figure}[t]
+    \begin{figure}[tbp]
       \begin{minipage}[c]{0.329\hsize}
         \centering
         \includegraphics[width=4.5cm]{image/exmaple/input1.jpg}
@@ -54,40 +52,53 @@
       \label{空撮画像例}
     \end{figure}
 
-    また，災害前DEMについては5mメッシュ解像度，10mメッシュ解像度が存在するが解像度の高い5mメッシュ解像度を用いることが望ましい．
+    災害前DEM，建物ポリゴンは\ref{オルソモザイク構築}項での出力結果をオープンGIS（Geographic Information System）\footnote{地理情報システム}であるQGIS\cite{QGIS}上に重畳し，該当範囲をトリミングし利用する．また，災害前DEMについては5mメッシュ解像度，10mメッシュ解像度が存在するが解像度の高い5mメッシュ解像度を用いることが望ましい．\fref{基盤地図情報}に災害前DEM及び建物ポリゴンの例を示す．
 
+    \begin{figure}[tbp]
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/dem.png}
+        \subcaption{災害前DEM}
+      \end{minipage}
+      \begin{minipage}[c]{0.45\hsize}
+        \centering
+        \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
+        \subcaption{建物ポリゴン}
+      \end{minipage}
+      \caption{基盤地図情報}
+      \label{基盤地図情報}
+    \end{figure}
 
 
   \section{三次元復元}
-    まず，災害後空撮画像の三次元復元を行うことによってオルソ画像とDSMの作成を行う．三次元復元とは複数枚画像を用いて被写体の形状や距離等の3次元情報を復元する処理である．オルソ画像は，三次元復元によって得られた三次元モデルを真上から投影した状態の各画素を取得することによって得る．DSMは三次元モデルを真上から投影した状態の数値標高モデルの各標高値を取得することによって得る．本手法では復元精度の高いAgisoft社のSfM\footnote{ある対象を撮影した複数枚画像より対象の形状を復元する技術}（Structure from Motion）ソフトウェアであるMetashape\cite{Metashape}を利用する．
+    まず，災害後空撮画像の三次元復元を行うことによって災害後DSMとオルソ画像の作成を行う．三次元復元とは複数枚画像を用いて被写体の形状や距離等の3次元情報を復元する処理である．オルソ画像は，三次元復元によって得られた三次元モデルを真上から投影した状態の各画素を取得することによって得る．DSMは三次元モデルを真上から投影した状態の各標高値を取得することによって得る．提案手法では復元精度の高いAgisoft社のSfM\footnote{ある対象を撮影した複数枚画像より対象の形状を復元する技術}（Structure from Motion）ソフトウェアであるMetashape\cite{Metashape}を利用する．
 
 
     \subsection{写真のアラインメント}
       \label{写真のアラインメント}
-      入力画像に対して特徴点の検出を行い，特徴マッチングを行うことで疎な点群の復元を行う．植生や水域等の特徴の少ない領域が原因でマッチングに失敗した場合，失敗した画像を除去し再度処理を行う．また，精度を指定することが可能であり，精度を下げると入力画像の解像度を下げることによって処理時間を短縮する．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{写真のアラインメント設定値}に，\ref{入力データ}節を用いた時の処理結果を\fref{写真のアラインメント結果}に示す．
+      入力画像に対して特徴点の検出を行い，特徴マッチングを行うことで疎な点群の復元を行う．植生や水域等の特徴の少ない領域が原因でマッチングに失敗した場合，失敗した画像を除去し再度処理を行う．また，精度を指定することが可能であり，精度を下げると入力画像の解像度を下げることによって処理時間を短縮する．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．\ref{入力データ}節の災害後空撮画像267枚を用いた際の処理結果を\fref{写真のアラインメント結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/alignment.jpg}
           \subcaption{設定値}
-          \label{写真のアラインメント設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/alignment.jpg}
           \subcaption{処理結果}
-          \label{写真のアラインメント結果}
         \end{minipage}
         \caption{写真のアラインメント}
+        \label{写真のアラインメント結果}
       \end{figure}
 
 
     \subsection{高密度クラウド構築}
       \label{高密度クラウド構築}
-      \ref{写真のアラインメント}項によって得られた点群と入力画像より法線を算出し，密な点群を生成する．精度を指定することが可能であり，後述の\ref{DEM構築}項の精度に影響する．また，深度フィルタによって外れ値の除去を行うことができる．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．本処理の設定値を\fref{高密度クラウド構築設定値}に，\ref{写真のアラインメント}項の出力結果を用いた時の処理結果を\fref{高密度クラウド構築結果}に示す．
+      \ref{写真のアラインメント}項によって得られた点群と入力画像より法線を算出し，密な点群を生成する．精度を指定することが可能であり，後述の\ref{DEM構築}項の精度に影響する．また，深度フィルタによって外れ値の除去を行うことができる．提案手法では「高」を指定し，その他の項目では既定値にて処理を行う．\ref{写真のアラインメント}項の出力結果を用いた際の処理結果を\fref{高密度クラウド構築結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/dense_cloud.jpg}
@@ -98,59 +109,57 @@
           \centering
           \includegraphics[width=9cm]{image/exmaple/dense_cloud.jpg}
           \subcaption{処理結果}
-          \label{高密度クラウド構築結果}
         \end{minipage}
         \caption{高密度クラウド構築}
+        \label{高密度クラウド構築結果}
       \end{figure}
 
 
     \subsection{メッシュ構築}
       \label{メッシュ構築}
-      \ref{高密度クラウド構築}項によって得られた高密度クラウドの点群からポリゴンメッシュの構築を行う．本処理の設定値を\fref{メッシュ構築設定値}に，\ref{高密度クラウド構築}項の出力結果を用いた時の処理結果を\fref{メッシュ構築結果}に示す．
+      \ref{高密度クラウド構築}項によって得られた高密度クラウドの点群からポリゴンメッシュの構築を行う．\ref{高密度クラウド構築}項の出力結果を用いた際の処理結果を\fref{メッシュ構築結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/mesh.jpg}
           \subcaption{設定値}
-          \label{メッシュ構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/mesh.jpg}
           \subcaption{処理結果}
-          \label{メッシュ構築結果}
         \end{minipage}
         \caption{メッシュ構築}
+        \label{メッシュ構築結果}
       \end{figure}
 
 
     \subsection{テクスチャ構築}
       \label{テクスチャ構築}
-      \ref{メッシュ構築}項によって生成元の点群の色が割り当てられるが，頂点の色のみが対象であるため解像度が低い．そのため，本処理によって入力画像のテクスチャをメッシュに貼り付ける．また，\ref{オルソモザイク構築}項の処理においても利用される．本処理の設定値を\fref{テクスチャ構築設定値}に，\ref{メッシュ構築}項の出力結果を用いた時の処理結果を\fref{テクスチャ構築結果}に示す．
+      \ref{メッシュ構築}項によって生成元の点群の色が割り当てられるが，頂点の色のみが対象であるため解像度が低い．そのため，本処理によって入力画像のテクスチャをメッシュに貼り付ける．また，\ref{オルソモザイク構築}項の処理においても利用される．\ref{メッシュ構築}項の出力結果を用いた際の処理結果を\fref{テクスチャ構築結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/texture.jpg}
           \subcaption{設定値}
-          \label{テクスチャ構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/texture.jpg}
           \subcaption{処理結果}
-          \label{テクスチャ構築結果}
         \end{minipage}
         \caption{テクスチャ構築}
+        \label{テクスチャ構築結果}
       \end{figure}
 
 
     \subsection{Z軸指定}
       \label{Z軸指定}
-      \ref{テクスチャ構築}項によって得られた三次元モデルが直下視となるよう，Metashapeにてビューを指定する．本研究では直下視点画像を入力としてるため，「ビューをリセット」を実行することで直下視点のビューに指定できる．これにより，奥行きが標高値へと変換できるため，DEMデータの構築とオルソモザイク画像の構築を行うことが可能となる．本処理の処理結果を\fref{Z軸指定結果}に示す．
+      \ref{テクスチャ構築}項によって得られた三次元モデルが直下視点となるよう，Metashapeにてビューを指定する．本研究では直下視点画像を入力としているため，「ビューをリセット」を実行することで直下視点のビューに指定できる．これにより，奥行きが標高値へと変換され直下視点の画素が取得できるため，DEMデータの構築とオルソモザイク画像の構築を行うことが可能となる．本処理の処理結果を\fref{Z軸指定結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=9cm]{image/exmaple/view_reset.jpg}
         \caption{Z軸指定の処理結果}
@@ -160,59 +169,57 @@
 
     \subsection{DEM構築}
       \label{DEM構築}
-      \ref{Z軸指定}項によって得られた直下視点の三次元モデルを投影することよって直下視の投影方向にてDEMデータの構築を行う．ここで，ソースデータに「高密度クラウド」を指定することで，より精度の高いDEMデータを構築することができる．一般的な測量手法では，地上基準点（GCP）やExifタグ\footnote{写真の撮影日時やカメラの機種名，絞りやISO感度等のカメラの設定値等のメタデータ}によりスケールや位置情報を埋め込むが，本研究でのヘリコプター空撮画像ではこれらが利用できないため，得られる標高値はモデル内での相対的な値となる．本処理の設定値を\fref{DEM構築設定値}に，\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{DEM構築結果}に示す．以降，この出力結果を切り抜いて使用する．
+      \ref{Z軸指定}項によって得られた直下視点の三次元モデルを投影することよって垂直投影方向にてDEMデータの構築を行う．ここで，ソースデータに「高密度クラウド」を指定することで，より精度の高いDEMデータを構築することができる．また，地上基準点（GCP）やExifタグ\footnote{写真の撮影日時やカメラの機種名，絞りやISO感度等のカメラの設定値等のメタデータ}によりスケールや位置情報を埋め込むことがあるが本研究で用いる空撮画像ではこれらを持たないため，得られる標高値はモデル内での相対的な値となる．\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{DEM構築結果}に示す．以降，この出力結果をトリミングして使用する．
 
       また，処理名称は「DEM構築」であるが，本研究では植生や建物の標高値を含まない数値標高モデルのことを「DEM」，植生や建物の標高値を含む数値標高モデルのことを「DSM」と呼称する．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/dem.jpg}
           \subcaption{設定値}
-          \label{DEM構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/dsm.jpg}
           \subcaption{処理結果}
-          \label{DEM構築結果}
         \end{minipage}
         \caption{DEM構築}
+        \label{DEM構築結果}
       \end{figure}
 
 
     \subsection{オルソモザイク構築}
       \label{オルソモザイク構築}
-      \ref{DEM構築}項と同様，直下視点の三次元モデルを投影することよって直下視の投影方向にて，擬似的な直下視点画像であるオルソモザイク画像（以降，オルソ画像）を構築する．本処理の設定値を\fref{オルソモザイク構築設定値}に，\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{オルソモザイク構築結果}に示す．以降，\ref{DEM構築}と同様の範囲で切り抜いて使用する．
+      \ref{DEM構築}項と同様，直下視点の三次元モデルを投影することよって垂直投影方向にて，擬似的な直下視点画像であるオルソモザイク画像（以降，オルソ画像）を構築する．\ref{Z軸指定}項の出力結果を用いた際の処理結果を\fref{オルソモザイク構築結果}に示す．以降，\ref{DEM構築}と同様の範囲でトリミングして使用する．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/ortho.jpg}
           \subcaption{設定値}
-          \label{オルソモザイク構築設定値}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=9cm]{image/exmaple/ortho.jpg}
           \subcaption{処理結果}
-          \label{オルソモザイク構築結果}
         \end{minipage}
         \caption{オルソモザイク構築}
+        \label{オルソモザイク構築結果}
       \end{figure}
 
 
 
   \section{災害前DEMの前処理}
     \label{災害前DEMの前処理}
-    本節では災害前DEMに対しの前処理を行う．災害後DSMと解像度を統一するために解像度の拡大処理を行い，その後，災害前DEMより地形特徴である傾斜角度及び傾斜方位を算出する．
+    本節では災害前DEMに対し前処理を行う．災害後DSMと解像度を統一するために解像度の拡大処理を行い，その後，災害前DEMより地形特徴である傾斜角度及び傾斜方位を算出する．
 
 
     \subsection{リサンプリング}
       \label{リサンプリング}
-      災害前後の数値標高モデルの解像度が異なるためリサンプリング処理によって解像度を統一する．この処理によって\ref{土砂量推定}節にて災害前後の標高値差分を取ることが可能となる．災害前データとして用いる国土地理院提供のDEMのメッシュ解像度は5m或いは10m単位，本研究で用いるDSMのメッシュ解像度は数十cm単位であるため，災害前DEMに対し最も滑らかな画素補間法であるバイキュービック補間\cite{バイキュービック法}を行い拡大することによって解像度を統一する．
+      災害前後の数値標高モデルの解像度が異なるためリサンプリング処理によって解像度を統一する．この処理によって\ref{土砂量推定}節にて災害前後の標高差分値を取ることが可能となる．災害前データとして用いる国土地理院DEMのメッシュ解像度は5m，或いは10m単位であり，本研究で用いるDSMのメッシュ解像度は数十cm単位である．よって，災害前DEMに対し最も滑らかな画素補間法であるバイキュービック補間\cite{バイキュービック法}を行い拡大することによって解像度を統一する．
       
-      バイキュービック法による画素値$i(x,y)$は\fref{ピクセル図}に示すような，注目画素の周囲$4\times4$（16）画素に対し，\Fref{バイキュービック法1}を適用することによって得られる．ただし，注目画素の座標を$(x,y)$とし，\Fref{バイキュービック法2}，\Fref{バイキュービック法3}を満たす．なお，$a$の値は一般的には$-1$を取る．\fref{入力DEM}のDEMに対しリサンプリング処理を行った結果を\fref{リサンプリング結果}に示す．
+      バイキュービック法による画素値$i(x,y)$は\fref{ピクセル図}に示すような，注目画素の周囲$4\times4$（16）画素に対し，\Fref{バイキュービック法1}を適用することによって得られる．ただし，注目画素の座標を$(x,y)$とし，\Fref{バイキュービック法2}，\Fref{バイキュービック法3}を満たす．なお，$a$の値は一般的には$-1$を取る．\ref{入力データ}節の災害前DEMに対しリサンプリング処理を行った結果を\fref{リサンプリング結果}に示す．
 
       \begin{eqnarray}
         \label{バイキュービック法1}
@@ -259,32 +266,24 @@
         \right.
       \end{eqnarray}
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=6cm]{image/method/bicubic.png}
         \caption{バイキュービック法におけるピクセル図}
         \label{ピクセル図}
       \end{figure}
-
-      \begin{figure}[t]
-        \begin{minipage}[c]{0.45\hsize}
-          \centering
-          \includegraphics[width=\linewidth]{image/exmaple/dem.png}
-          \subcaption{災害前DEM}
-        \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
-          \centering
-          \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
-          \subcaption{リサンプリング結果}
-        \end{minipage}
+      
+      \begin{figure}[tbp]
+        \centering
+        \includegraphics[width=6cm]{image/method/mesh.png}
         \caption{バイキュービック法によるリサンプリング}
         \label{リサンプリング結果}
       \end{figure}
 
 
-    \subsection{傾斜角度・傾斜方位の算出}
-      \label{傾斜角度・傾斜方位の算出}
-      xxxの指標として，\ref{土砂移動推定}節にて，．．．．．傾斜角度，傾斜方位を利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素の$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{リサンプリング結果}のリサンプリング済みDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度・傾斜方位モデル}に示す．なお，疑似カラーを用いて表しており，赤色が強いほど値が高く，青色が強いほど値が低いとし，白色は欠損領域とする．
+    \subsection{傾斜角度・傾斜方位算出}
+      \label{傾斜角度・傾斜方位算出}
+      後述の\ref{土砂領域マスク画像作成}節にて傾斜角度モデルを，\ref{土砂移動推定}節にて傾斜方位モデルを利用する．傾斜角度とは，ある画素の傾斜角度を表す指標であり，傾斜角度の値が大きいほど地表が急勾配であることを表す．傾斜方位とは，下りの傾斜角度が指している方向を表す\cite{傾斜角度・傾斜方位}．各指標は\Fref{傾斜角度}，\Fref{傾斜方位}によって算出される．なお，傾斜方位は$0^\circ$から$360^\circ$（真北）で右回りに計算される指標であり，傾斜角度及び傾斜方位共に度数法での算出式である．$\dfrac{dz}{dx}$，$\dfrac{dz}{dy}$は\fref{メッシュ図}のように$e$を中心とした$3 \times 3$画素（9画素）のメッシュがあった場合の中心画素における$X$方向と$Y$方向の変化率であり，\Fref{X方向・Y方向の変化率}より算出される．\fref{リサンプリング結果}のリサンプリング済みDEMを用いて導出した傾斜角度と傾斜方向を\fref{傾斜角度・傾斜方位モデル}に示す．なお，数値表現には\fref{疑似カラーバー}に示す疑似カラーを用いる．
 
       \begin{equation}
         \label{傾斜角度}
@@ -314,50 +313,49 @@
         \right.
       \end{equation}
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=6cm]{image/method/mesh.png}
         \caption{傾斜角度・傾斜方位におけるメッシュ図}
         \label{メッシュ図}
       \end{figure}
       
-      \begin{figure}[t]
-        \begin{minipage}[c]{0.329\hsize}
+      \begin{figure}[tbp]
+        \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=4.5cm]{image/exmaple/resampling.png}
-          \subcaption{補正済み災害前DEM}
-          \label{入力DEM}
-        \end{minipage}
-        \begin{minipage}[c]{0.329\hsize}
-          \centering
-          \includegraphics[width=4.5cm]{image/exmaple/slope.png}
+          \includegraphics[width=\linewidth]{image/exmaple/slope.png}
           \subcaption{傾斜角度モデル}
-          \label{傾斜角度モデル}
         \end{minipage}
-        \begin{minipage}[c]{0.329\hsize}
+        \begin{minipage}[c]{0.45\hsize}
           \centering
-          \includegraphics[width=4.5cm]{image/exmaple/aspect.png}
+          \includegraphics[width=\linewidth]{image/exmaple/aspect.png}
           \subcaption{傾斜方位モデル}
-          \label{傾斜方位モデル}
         \end{minipage}
-        \caption{傾斜角度・傾斜方位の算出}
+        \caption{傾斜角度・傾斜方位モデル}
+        \label{傾斜角度・傾斜方位モデル}
+      \end{figure}
+
+      \begin{figure}[tbp]
+        \centering
+        \includegraphics[width=6cm]{image/method/color_bar.png}
+        \caption{疑似カラーバー}
+        \label{疑似カラーバー}
       \end{figure}
 
 
-
-  \section{災害後オルソ画像の前処理}
-    本節では災害後オルソ画像の前処理を行う．後述の処理での検出単位は領域ベースとするため領域分割を行う．その後，各領域の領域データを取得するためにカラーラベリングを行う．
+  \section{オルソ画像の前処理}
+    本節ではオルソ画像の前処理を行う．後述の処理での検出単位は領域ベースであるため領域分割を行う．その後，各領域の領域データを取得するためにカラーラベリングを行う．
 
 
     \subsection{オルソ画像の領域分割}
       \label{オルソ画像の領域分割}
-      空撮画像等の土砂領域や植生領域を画素ベースで検出することは難しいため，近傍画素との関係性を考慮した領域ベースでの判別を行う．本研究ではMean-Shift法\cite{Mean-Shift法1, Mean-Shift法2}を用いた領域分割を行う．Mean-Shift法とはカーネル密度推定によるクラスタリング手法の一つで，画像の領域分割，動画像における対象物体追跡に用いられる．また，領域分割の代表的な手法であるk-means法\cite{k-means法}に比べ，クラスタ数を事前に決める必要が無いという利点がある．Mean-Shift法は，$d$次元空間中の$N$個の点群を標本として得られるような確率密度関数$f(x)$を考え，その標本点から確率密度関数$f(x)$の極大点を探索する手法である．本研究では，Mean-Shift法による領域分割を行うことによって近傍の類似色画素を領域に分類しつつ，空撮画像の撮影機器や画像上の細かい地物による色や輝度のばらつきを抑制する．次に，Mean-Shift法にてカラー画像の領域分割を行う手順について説明する．
+      空撮画像の土砂領域や植生領域を画素ベースで検出することは難しいため，近傍画素との関係性を考慮した領域ベースでの判別を行う．本研究ではMean-Shift法\cite{Mean-Shift法1, Mean-Shift法2}を用いた領域分割を行う．Mean-Shift法とはカーネル密度推定によるクラスタリング手法の一つで，画像の領域分割，動画像における対象物体追跡に用いられる．また，領域分割の代表的な手法であるk-means法\cite{k-means法}に比べ，クラスタ数を事前に決める必要が無いという利点がある．Mean-Shift法は，$d$次元空間中の$N$個の点群を標本として得られるような確率密度関数$f(x)$を考え，その標本点から確率密度関数$f(x)$の極大点を探索する手法である．本研究では，Mean-Shift法による領域分割を行うことによって近傍の類似色画素を領域に分類しつつ，空撮画像の撮影機器や画像上の細かい地表物による色や輝度のばらつきを抑制する．次に，Mean-Shift法にてカラー画像の領域分割を行う手順について説明する．
 
       \begin{enumerate}
         \setlength{\itemsep}{-5pt}
         \item カラー画像中の各画素の位置を二次元座標$x_i$，その画素値を三次元チャンネル$v_{i} =(R_{i},G_{i},B_{i})$とし，画素位置と画素値を結合した5次元空間内の点$z_{i} = (x_{i}, v_{i})$を考える．距離と色相が近い画素が5次元空間内でクラスタを成しているとし，各画素をMean-Shift法でクラスタリングする．
-        \item すべての$z_{i}$にMean-Shift法を適用し，収束位置$z_{i}^c = (x_{i}^c , v_{i}^c)$を計算する．
-        \item $x_{i}$の画素値を収束位置の画素の値$v^c = (R^c, G^c, B^c)$に置き換えることによって領域分割ができる．カーネル密度推定とMean-Shift法の計算式を\Fref{Mean-Shift法1}と\Fref{Mean-Shift法2}示す．ただし，\Fref{Mean-Shift法3}を満たすとする.
+        \item すべての$z_{i}$にMean-Shift法を適用し，収束位置$z_{i}^c = (x_{i}^c, v_{i}^c)$を計算する．
+        \item $x_{i}$の画素値を収束位置の画素の値$v^c = (R^c, G^c, B^c)$に置き換えることによって領域分割を行える．カーネル密度推定とMean-Shift法の計算式を\Fref{Mean-Shift法1}と\Fref{Mean-Shift法2}示す．ただし，\Fref{Mean-Shift法3}を満たすとする．
       \end{enumerate}
     
       \begin{equation}
@@ -391,30 +389,29 @@
         \right.
       \end{equation}
 
-      なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像の一部を切り取った画像を\fref{Mean−Shift法入力}に，Mean-Shift法を適用した結果を\fref{Mean-Shift法出力}に示す．
+      なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像に対しMean-Shift法を適用した結果を\fref{Mean-Shift法}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/trimming.png}
-          \subcaption{入力画像}
-          \label{Mean−Shift法入力}
+          \subcaption{オルソ画像}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/mean-shift.png}
-          \subcaption{出力画像}
-          \label{Mean-Shift法出力}
+          \subcaption{Mean-shift法結果}
         \end{minipage}
         \caption{Mean-Shift法}
+        \label{Mean-Shift法}
       \end{figure}
 
 
     \subsection{カラーラベリング}
       \label{カラーラベリング}
-      \ref{建物領域検出}項にて建物領域を検出する際に，領域の面積や周囲長といった値が必要である．これらの領域データは通常，ラベリング処理\footnote{二値画像中の連結した領域を抽出する解析手法であり，各領域の面積，周囲長，重心座標等を取得できる}によって取得可能である．しかし，単純に二値化を行った際に，\fref{建物領域の二値化例}に示すように複数の建物領域を同一の領域として検出してしまい，建物領域の面積や周囲長が正しく取得できない．よって，本研究では{オルソ画像の領域分割}項の出力結果に対してカラーラベリング（本研究では本処理をカラーラベリングと呼称する）を行い，領域を区別して検出できるようにする．カラーラベリング処理の通常ラベリング処理との相違点として，色相情報が同一である近傍の連結画素を領域として抽出する．\fref{オルソ画像の領域分割}項の出力画像に対しカラーラベリングを適用した際のラベル画像を\fref{カラーラベリング結果}に示す．
+      \ref{建物領域検出}項にて建物領域を検出する際に，領域の面積や周囲長といった値が必要である．これらの領域データは通常，ラベリング処理\footnote{二値画像中の連結した領域を抽出する解析手法であり，各領域の面積，周囲長，重心座標等を取得できる}によって取得可能である．しかし，単純に二値化を行った際に，\fref{建物領域の二値化例}に示すように複数の建物領域を同一の領域として検出してしまい，建物領域の面積や周囲長が正しく取得できない．よって，本研究では\ref{オルソ画像の領域分割}項の出力結果に対して以下の処理（本研究では本処理をカラーラベリングと呼称する）を行い，類似領域を区別して検出できるようにする．カラーラベリング処理と通常のラベリング処理との相違点として，色相が同一である近傍の連結画素を領域として抽出する．\ref{オルソ画像の領域分割}項の出力画像に対しカラーラベリングを適用した際のラベル画像を\fref{カラーラベリング結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/building_ortho.png}
@@ -429,7 +426,7 @@
         \label{建物領域の二値化例}
       \end{figure}
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=9cm]{image/exmaple/labeling.png}
         \caption{カラーラベリング結果}
@@ -446,57 +443,52 @@
         C = \dfrac{4 \pi S} {L^2} 
       \end{equation}
 
-      また，国土地理院の提供する建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域の検出結果に建物ポリゴンを重畳し，建物候補領域に建物ポリゴンのピクセルが50\%以上含まれる場合，その建物候補領域を建物領域として検出する．その後，\ref{土砂領域マスク画像作成}節にて得る土砂領域マスク画像を適用し，植生領域を除去する．使用した建物ポリゴン画像を\fref{建物ポリゴン}に，\fref{オルソ画像の領域分割}項の入力画像より建物領域を検出した例を\fref{建物領域検出結果}に示す．なお，赤色の領域が建物領域である．
-
-      \begin{figure}[t]
-        \begin{minipage}[c]{0.45\hsize}
-          \centering
-          \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
-          \subcaption{建物ポリゴン}
-          \label{建物ポリゴン}
-        \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
-          \centering
-          \includegraphics[width=\linewidth]{image/exmaple/building.png}
-          \subcaption{建物領域検出結果}
-          \label{建物領域検出結果}
-        \end{minipage}
+      また，建物ポリゴンを利用することによって，建物候補領域から建物領域を検出する．建物候補領域に建物ポリゴンを重畳し，建物ポリゴンのピクセルが50\%以上含まれる建物候補領域を建物領域として検出する．その後，\ref{土砂領域マスク画像作成}節にて得る土砂領域マスク画像を適用し植生領域を除去する．\ref{入力データ}節の建物ポリゴン及び\ref{カラーラベリング}項の出力結果を用いた際の建物領域検出結果を\fref{建物領域検出結果}に示す．なお，赤色の領域が建物領域である．
+      
+      \begin{figure}[tbp]
+        \centering
+        \includegraphics[width=9cm]{image/exmaple/building.png}
         \caption{建物領域検出}
+        \label{建物領域検出結果}
       \end{figure}
 
 
 
   \section{災害後DSMの前処理}
     \label{災害後DSMの前処理}
-    DSMは建物・樹木等を含む数値標高モデルに対し，DEMは建物・樹木等の地表物の高さを含まないため，単純に災害前後の標高値差分を取った場合にずれが生じる．よって，ここでは災害後DSMに対し補正を行う．
+    DSMは植生や建物等の標高値を含む数値標高モデルであるのに対し，DEMは植生や建物等の標高値を含まない数値標高モデルであるため，単純に災害前後の標高差分値を取った場合にずれが生じる．よって，ここでは災害後DSMに対し補正を行う．
 
 
     \subsection{ジオリファレンサ}
       \label{ジオリファレンサ}
-      \ref{入力データ}節で用いる空撮画像において，本研究では位置情報が埋め込まれていない画像群の例が存在する．この場合，オルソ画像や災害後DSMは位置情報を持たないため地図上への重畳ができない．しかし，後述の処理でオルソ画像や災害後DSMと，災害前DEM等の位置情報が対応付けられいてる必要がある．そのため，災害後DSMに位置情報が付与されていない場合，QGISのジオリファレンサ機能を利用して位置合わせを行う．ジオリファレンサとは，位置情報を持たないラスタデータ\footnote{画像同様に格子状のピクセル構造を持つデータ構造}に任意の位置情報を付与する手法であり，この処理によって位置情報を持たないオルソ画像や災害後DSMを地図上に重畳でき，災害前DEM等と位置情報の対応付けが可能となる．
+      \ref{入力データ}節の災害後空撮画像において，本研究では地理情報が埋め込まれていない例が存在するが，後述の処理で災害後DSMやオルソ画像と，災害前DEM等の地理情報が対応付けられいてる必要がある．この場合，災害後DSMやオルソ画像は地理情報を持たないため地図上への重畳ができない．よって，災害後DSMに地理情報が付与されていない場合，QGISのジオリファレンサ機能を利用して位置合わせを行う．ジオリファレンサとは，地理情報を持たないラスタデータ\footnote{画像同様に格子状のピクセル構造を持つデータ構造}に任意の地理情報を付与する手法である．この処理によって地理情報を持たない災害後DSMやオルソ画像を地図上に重畳でき，災害前DEM等と地理情報の対応付けが可能となる．
 
-      QGISにてジオリファレンサを起動し，ラスタデータと地図上のランドマークの対応点付けを行う．ラスタデータのランドマークを選択し，地図上の同一のランドマークを選択する．最低4箇所の対応付けが必要であり，ラスタデータと地図上の対応するランドマークの対応付け箇所が多いほど精度が向上する．本処理の設定値を\fref{ジオリファレンサ設定値}に，\ref{DEM構築}項の出力結果を国土地理院の標準地図\cite{標準地図}上に重畳した結果を\fref{ジオリファレンサ結果}に示す．
-
-      \begin{figure}[t]
-        \begin{minipage}[c]{0.45\hsize}
+      QGISにてジオリファレンサを起動し，ラスタデータ上のランドマークと地図上のランドマークの対応点付けを行う．最低4箇所の対応付けが必要であり，対応付け箇所が多いほど精度が向上する．\ref{DEM構築}項の災害後DSM，\ref{オルソモザイク構築}項のオルソ画像に対しジオリファレンサを行い，国土地理院標準地図\cite{標準地図}に重畳した際の処理結果を\fref{ジオリファレンサ結果}に示す．
+      
+      \begin{figure}[tbp]
+        \begin{minipage}[c]{0.329\hsize}
           \centering
           \includegraphics[width=4.5cm]{image/setting/georeferencer.png}
           \subcaption{設定値}
-          \label{ジオリファレンサ設定値}
         \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.329\hsize}
           \centering
-          \includegraphics[width=9cm]{image/exmaple/georeferencer.png}
-          \subcaption{DSMの重畳結果}
-          \label{ジオリファレンサ結果}
+          \includegraphics[width=4.5cm]{image/exmaple/geo_dsm.png}
+          \subcaption{災害後DSM}
+        \end{minipage}
+        \begin{minipage}[c]{0.329\hsize}
+          \centering
+          \includegraphics[width=4.5cm]{image/exmaple/geo_ortho.png}
+          \subcaption{オルソ画像}
         \end{minipage}
         \caption{ジオリファレンサ}
+        \label{ジオリファレンサ結果}
       \end{figure}
 
 
     \subsection{災害後DSMの正規化}
       \label{災害後DSMの正規化}
-      次に，\ref{DEM構築}によって得られたDSMはモデル内での相対的な標高値であるため，災害前DEMと水平位置を対応付けし，\Fref{正規化}を適用することによって災害前DEMの最小値と最大値の範囲に正規化した絶対的な標高値を与える．$d_{a}$は災害後DSMの標高値，$d_{b}$は災害前DEMの標高値を示す．なお，後述の土砂領域マスク画像を前後の標高値モデルに適応してから行う．\ref{DEM構築}項の災害後DSMに対して正規化を行った結果を\fref{正規化結果}に示す．
+      \ref{DEM構築}項によって得られたDSMはモデル内での相対的な標高値であるため，災害前DEMの標高値を対応付けし，\Fref{正規化}を適用することによって災害前DEMの最小値と最大値の範囲に正規化した絶対的な標高値を与える．$d_{a}$は災害後DSMの標高値，$d_{b}$は災害前DEMの標高値を示す．なお，後述の土砂領域マスク画像を前後の数値標高モデルに適用してから行う．\ref{DEM構築}項の災害後DSMに対して正規化を行った結果を\fref{災害後DSMの正規化結果}に示す．
 
       \begin{equation}
         \label{正規化}
@@ -505,30 +497,38 @@
           \dfrac{d_{a} - min(d_{a})} {max(d_{a}) - min(d_{a})}
       \end{equation}
 
-      \begin{figure}[t]
-        \centering
-        \includegraphics[width=9cm]{image/exmaple/normed_dsm.png}
-        \caption{災害後DSMの正規化結果}
-        \label{正規化結果}
+      \begin{figure}[tbp]
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/dsm.png}
+          \subcaption{災害後DSM}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/normed_dsm.png}
+          \subcaption{災害後DSMの正規化結果}
+        \end{minipage}
+        \caption{災害後DSMの正規化}
+        \label{災害後DSMの正規化結果}
       \end{figure}
 
 
     \subsection{建物領域の標高値補正}
-      DSMは建物領域の標高値を含む標高値モデルであるため建物領域の標高値を除去することによって，災害前後の標高値差分を取った際の建物領域の影響を除去する．\ref{建物領域検出}項で抽出した全建物領域に対し以下の処理を行う．
+      DSMは建物領域の標高値を含む数値標高モデルである．よって，建物領域の標高値を除去することによって，災害前後の標高差分値を取った際の建物領域の影響を除去する．\ref{建物領域検出}項で抽出した全建物領域に対し以下の処理を行う．
 
       \begin{enumerate}
         \setlength{\itemsep}{-5pt}
         \item 注目している建物領域に隣接している領域を取得する
-        \item 取得した隣接領域が建物領域でない場合その領域を地表面領域と定義する
+        \item 取得した隣接領域が建物領域でない場合，その領域を地表面領域と定義する
         \item 注目している建物領域の全画素を地表面領域の平均値で置換する
       \end{enumerate}
 
       建物領域の標高値補正結果を\fref{建物領域の標高値補正結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=9cm]{image/exmaple/removed_building.png}
-        \caption{建物領域の標高値補正結果}
+        \caption{建物領域の標高値補正}
         \label{建物領域の標高値補正結果}
       \end{figure}
 
@@ -536,24 +536,24 @@
 
   \section{土砂領域マスク画像作成}
     \label{土砂領域マスク画像作成}
-    本節では，植生による誤検出を低減するために土砂領域マスク画像を作成する．
+    本節では，植生による誤検出を除去するために土砂領域マスク画像を作成する．
 
 
     \subsection{ヒストグラム均一化}
-      空撮画像は撮影時の天候や時刻，季節によって色相や輝度に偏りが生じる．本研究では用いた指標によって判別処理を行うため，偏りがある場合に検出結果に影響が生じる可能性がある．また，複数枚の画像に本手法を適用する場合，このような偏りが存在する場合に同一の閾値を利用すると検出結果にばらつきが生じる．したがって，CLAHEのアルゴリズム\cite{CLAHEのアルゴリズム}によってヒストグラムを均一化する．CLAHEのアルゴリズムとは画像をタイルと呼ばれる小領域に分割し，タイル毎にヒストグラム均一化を行う手法である．ただし，タイル毎に均一化を行うとノイズが強調されるため，ビン（ヒストグラムの棒）の出現頻度が特定の上限値以上となった場合，その画素をその他のビンに均等に配分した後，ヒストグラムの均一化を行うことによってノイズの強調を抑える．\ref{オルソ画像の領域分割}項の出力結果におけるヒストグラム均一化の処理例を\fref{CLAHEのアルゴリズム結果}に示す．
+      空撮画像は撮影時の天候や時刻，季節によって色相や輝度に偏りが生じる．本研究では色相によって判別処理を行うため，偏りがある場合に検出結果に影響が生じる．また，このような偏りが存在する複数枚画像に提案手法を適用する場合，同一の閾値を設定した際に検出結果にばらつきが生じる．したがって，CLAHEのアルゴリズム\cite{CLAHEのアルゴリズム}によってヒストグラム均一化を行う．CLAHEのアルゴリズムとは画像をタイルと呼ばれる小領域に分割し，タイル毎にヒストグラム均一化を行う手法である．ただし，タイル毎に均一化を行うとノイズが強調されるため，ビン（ヒストグラムの棒）の出現頻度が特定の上限値以上となった場合，その画素をその他のビンに均等に配分した後，ヒストグラムの均一化を行うことによってノイズの強調を抑える．\ref{オルソ画像の領域分割}項の領域分割画像におけるヒストグラム均一化の処理例を\fref{CLAHEのアルゴリズム結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=9cm]{image/exmaple/clahe.png}
-        \caption{CLAHEのアルゴリズムの出力結果}
+        \caption{CLAHEのアルゴリズム}
         \label{CLAHEのアルゴリズム結果}
       \end{figure}
 
 
     \subsection{L*a*b*表色系への変換}
       \label{L*a*b*表色系への変換}
-      オルソ画像に対しL*a*b*変換\cite{Lab表色系1}を行う．L*a*b*表色系とは輝度をL*，色相と彩度を示す色度をa*，b*で表した表色系であり，人間の視覚に近い表色系であるため色情報を用いて分類を行う際に有効な指標であることが示されている．また，空撮画像中の土砂領域はRGB表色系における赤色の値が大きく，植生領域は緑色の値が大きいという特徴があるため，本研究ではL*a*b*表色系を用いて土砂領域及び植生領域を検出する\cite{Lab表色系2, Lab表色系3, Lab表色系4}．本研究で用いる画像は本処理時点でRGB表色系にて表されているためL*a*b*表色系への変換を行う．RGB表色系からL*a*b*表色系への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB表色系はデバイス依存色であり直接L*a*b*表色系に変換する式は存在しないため，デバイス独立色であるXYZ表色系\cite{XYZ表色系}に変換してから処理を行う．XYZ表色系への変換式を\Fref{XYZ表色系}に示す．$X,Y,Z$，$R,G,B$はそれぞれ，XYZ表色系及びRGB表色系の各チャンネルの画素値を表す．また，上記指標のうち，検出に用いるa*値，b*値画像の\ref{オルソ画像の領域分割}項の領域分割画像における例を\fref{Lab画像}に示す．
-
+      \ref{オルソ画像の領域分割}項の領域分割画像はRGB表色系にて表されているためL*a*b*表色系への変換\cite{Lab表色系1}を行う．L*a*b*表色系とは輝度をL*，色相と彩度を示す色度をa*，b*で表した表色系てある．人間の視覚に近い表色系であるため色情報を用いて分類を行う際に有効な指標であることが示されている．また，空撮画像中の土砂領域はRGB表色系における赤色の値が大きく，植生領域は緑色の値が大きいという特徴があるため，本研究ではL*a*b*表色系を用いて土砂領域及び植生領域を検出する\cite{Lab表色系2, Lab表色系3, Lab表色系4}．RGB表色系からL*a*b*表色系への変換式を\Fref{Lab表色系1}と\Fref{Lab表色系2}に示す．RGB表色系はデバイス依存色であり直接L*a*b*表色系に変換する式は存在しないため，デバイス独立色であるXYZ表色系\cite{XYZ表色系}に変換してから処理を行う．XYZ表色系への変換式を\Fref{XYZ表色系}に示す．$X,Y,Z$，$R,G,B$はそれぞれ，XYZ表色系及びRGB表色系の各チャンネルの画素値を表す．\ref{オルソ画像の領域分割}項の領域分割画像において，検出に用いるa*値，b*値画像を\fref{Lab画像}に示す．
+      
       \begin{eqnarray}
       \label{Lab表色系1}
         \left\{
@@ -589,7 +589,7 @@
         \right.
       \end{eqnarray}
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/lab-a.png}
@@ -600,16 +600,16 @@
           \includegraphics[width=\linewidth]{image/exmaple/lab-b.png}
           \subcaption{b*値画像}
         \end{minipage}
-        \caption{L*a*b*表色系の画像例}
+        \caption{L*a*b*表色系}
         \label{Lab画像}
       \end{figure}
 
 
     \subsection{土砂領域検出}
       \label{土砂領域検出}
-      土砂災害は植生の多い山間部の斜面にて多発し，土砂領域を検出する際に誤検出する可能性がある．よって，植生領域を検出結果より除去する．土砂領域，植生領域は\tref{領域特徴}に示す特徴を持つためL*a*b*表色系のa*値，b*値の指標を用いた閾値処理を行い，土砂候補領域，植生領域を検出する．また，土砂災害における土砂災害発生危険箇所は傾斜角度が$15^{\circ}~20^{\circ}$の範囲，土砂到達範囲として傾斜角度が$2^{\circ}~3^{\circ}$の範囲であること多い\cite{土砂災害発生範囲}．よって，\ref{傾斜角度・傾斜方位の算出}項で算出した，傾斜角度モデルを用いて急傾斜領域を除去する．ただし，この傾斜角度によってマスク処理を行った場合土砂領域が必要以上に除去されてしまうため，本研究では$30^{\circ}$以上の領域を急傾斜領域として抽出を行う．以上より，検出した土砂候補領域より植生領域及び急傾斜領域を除去した領域を土砂領域とする．{オルソ画像の領域分割}項の入力画像より土砂領域を検出した結果を\fref{土砂領域検出結果}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
+      \ref{L*a*b*表色系への変換}項のa*値，b*値画像及び\ref{傾斜角度・傾斜方位算出}項の傾斜角度モデルを用いて土砂領域の検出を行う．土砂災害は植生領域の多い山間部にて多発するため，土砂領域を検出する際に誤検出する可能性がある．よって，植生領域を土砂領域より除去する．また，土砂領域，植生領域はそれぞれ\tref{領域特徴}に示す特徴を持つためa*値，b*値による閾値処理を行い，土砂候補領域，植生領域として検出する．また，土砂災害における土砂災害発生危険箇所は傾斜角度が$15^{\circ} - 20^{\circ}$の領域，土砂到達範囲として傾斜角度が$2^{\circ} - 3^{\circ}$の領域であることが多い\cite{土砂災害発生範囲}．よって，傾斜角度モデルを用いて急傾斜領域を除去する．ただし，この傾斜角度によってマスク処理を行った場合土砂領域が必要以上に除去されてしまうため，本研究では$30^{\circ}$以上の領域を急傾斜領域として除去する．以上より，土砂候補領域から植生領域及び急傾斜領域を除去した領域を土砂領域とする．\ref{オルソ画像の領域分割}項の領域分割画像より土砂領域を検出した結果を\fref{土砂領域検出結果}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
 
-      \begin{table}[b]
+      \begin{table}[tbp]
         \centering
         \caption{領域特徴}
         \label{領域特徴}
@@ -622,7 +622,7 @@
         \end{tabular}
       \end{table}
       
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{tabular}{cc}
           \begin{minipage}[c]{0.45\hsize}
             \centering
@@ -642,20 +642,20 @@
           \begin{minipage}[c]{0.45\hsize}
             \centering
             \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
-            \subcaption{土砂領域の検出結果}
+            \subcaption{土砂領域検出結果}
           \end{minipage} \\
         \end{tabular}
-        \caption{土砂領域の検出結果}
-        \label{土砂領域の検出結果}
+        \caption{土砂領域検出結果}
+        \label{土砂領域検出結果}
       \end{figure}
 
 
     \subsection{土砂領域マスク画像作成}
-      \ref{土砂領域検出}項の検出結果より，二値の土砂マスク画像を作成する．作成する土砂マスク画像の目的として植生領域を除去し，後の土砂量と土砂移動推定にて範囲を限定する目的で使用する．そのため，本研究では土砂領域中の建物領域やその他の地物等は土砂マスク画像の土砂領域として検出する．\ref{土砂領域検出}の検出結果は色相情報を用いているため屋根の色相によっては建物領域を未検出とすることがある．よって，建物領域の穴を埋め土砂領域として扱うため，クロージング処理を適用した後，面積が閾値以下の小領域を除去する．
+      \ref{土砂領域検出}項の検出結果より，二値の土砂マスク画像を作成する．土砂マスク画像を適用することによって植生領域を除去し，後の土砂量と土砂移動推定にて土砂領域のみに処理範囲を限定する．そのため，本研究では土砂領域中の建物領域やその他地表物等を土砂マスク画像の土砂領域として検出する．土砂領域検出結果は色相を用いているため屋根の色相によっては建物領域を未検出とすることがある．よって，建物領域の穴を埋め土砂領域として扱うため，クロージング処理を適用した後，面積が閾値以下の小領域を除去する．
       
-      クロージング処理とは二値画像において膨張処理\footnote{注目画素の8近傍に白画素がある場合，注目画素を白色にする処理}を複数回行った後，収縮処理\footnote{注目画素の8近傍に黒画素がある場合，注目画素を黒色にする処理}を同回数行い，画像中の穴を除去する処理である．\ref{土砂領域検出}項の検出結果の二値画像におけるクロージング処理の適用例を\fref{クロージング処理}に示す．
+      クロージング処理とは二値画像に対し膨張処理\footnote{注目画素の8近傍に白画素がある場合，注目画素を白色にする処理}を複数回行った後，収縮処理\footnote{注目画素の8近傍に黒画素がある場合，注目画素を黒色にする処理}を同回数行い，画像中の穴を除去する処理である．\ref{土砂領域検出}項の二値画像におけるクロージング処理の結果を\fref{クロージング処理結果}に示す．
 
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/sediment_bin.png}
@@ -664,15 +664,15 @@
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/closing.png}
-          \subcaption{出力画像}
+          \subcaption{クロージング処理結果}
         \end{minipage}
-        \caption{クロージング処理の出力結果}
-        \label{クロージング処理}
+        \caption{クロージング処理}
+        \label{クロージング処理結果}
       \end{figure}
 
-      この後，二値画像に対しラベリング処理を行うことによって各領域の面積を算出する．面積における閾値処理によって，一般住宅と同程度，或いはそれ以下の面積の小領域を除去する．先程のクロージング処理結果に対し小領域除去を行った結果を\fref{小領域除去}に示す．
+      次に，二値画像に対しラベリング処理を行うことによって各領域の面積を算出する．その後，領域面積における閾値処理によって，一般の建物と同程度，或いはそれ以下の面積の小領域を除去する．前述のクロージング処理結果に対し小領域除去を行った結果を\fref{小領域除去}に示す．
       
-      \begin{figure}[t]
+      \begin{figure}[tbp]
         \centering
         \includegraphics[width=9cm]{image/exmaple/normed_mask.png}
         \caption{小領域の除去結果}
@@ -683,16 +683,16 @@
 
   \section{土砂量推定}
     \label{土砂量推定}
-    \ref{災害前DEMの前処理}節で前処理を行った災害前DEM及び\ref{災害後DSMの前処理}節で前処理を行った災害後DSMを\Fref{土砂量推定式}に適用することによって標高値差分を求める．$DEM_{before}$は災害前DEM，$DSM_{after}$は災害後DSMを表す．
+    \ref{災害前DEMの前処理}節での補正済み災害前DEM及び\ref{災害後DSMの前処理}節での補正済み災害後DSMを\Fref{土砂量推定式}に適用することによって標高差分値を求める．$DEM_{before}$は災害前DEM，$DSM_{after}$は災害後DSMを表す．
     
     \begin{equation}
       \label{土砂量推定式}
       sediment = DSM_{after} - DEM_{before}
     \end{equation}
 
-    その後，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域に限定して土砂量変化を抽出する．\ref{災害前DEMの前処理}節及び\ref{災害後DSMの前処理}節での出力結果での土砂量推定結果を\ref{オルソ画像の領域分割}項のオルソ画像に重畳した結果を\fref{土砂量推定結果}に示す．
+    その後，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域に限定して土砂量変化を抽出する．\ref{災害前DEMの前処理}節及び\ref{災害後DSMの前処理}節における出力結果を用いた際の土砂量推定結果を\ref{オルソモザイク構築}項のオルソ画像に重畳した結果を\fref{土砂量推定結果}に示す．なお，疑似カラーバーを\fref{疑似カラーバー}に示す．
 
-    \begin{figure}[t]
+    \begin{figure}[tbp]
       \centering
       \includegraphics[width=9cm]{image/exmaple/difference.png}
       \caption{土砂量推定図}
@@ -703,28 +703,28 @@
 
   \section{土砂移動推定}
     \label{土砂移動推定}
-    最後に，土砂災害によって土砂の移動軌跡をベクトルによって示す，土砂移動推定を行う．領域ベースでの土砂移動推定について，正確な領域区分の判読及び自動化，領域数の多さに起因し精度評価の際の目視判読による正解データの作成が困難であるため，メッシュベースでの推定を行った．
+    最後に，土砂の移動軌跡をベクトルで示すことによって土砂移動推定を行う．領域ベースでの土砂移動推定について，正確な領域区分の判読，推定処理の自動化及び領域数の多さに起因し，精度評価における目視判読による正解データの作成が難しい．よって，メッシュベースでの推定を行うことにより精度評価での正解データ作成を簡素にした．
 
-    土砂災害における土砂は一般的に上流から下流へ流下する．また，\fref{土砂移動概念図}に示すように，災害後には上流域における土砂崩壊部で侵食が発生し下流域には上流から流下した土砂が堆積する\cite{土砂量解析5}．よって，本研究ではメッシュ中心画素から以下の条件を満たす画素を追跡し，メッシュ内でメッシュ中心画素から最も直線距離の遠い画素へ移動線を結ぶことによって土砂移動を推定する．
+    \fref{土砂移動概念図}に示すように，土砂災害における土砂は一般的に上流から下流へ流下する．また，災害後には上流域における土砂崩壊部で侵食が発生し，下流域には上流から流下した土砂が堆積する\cite{土砂量解析5}．よって，本研究ではメッシュ中心画素から以下の条件を満たす画素を追跡し，メッシュ内でメッシュ中心画素から最も直線距離の遠い画素へ移動線を結ぶことによって土砂移動の変化を推定する．
 
     \begin{itemize}
       \setlength{\itemsep}{-5pt}
       \item 上流方向から下流方向に沿って傾斜方向が向いている
-      \item 上流領域の標高値が下流領域の標高値より低い
+      \item 上流領域の標高値が下流領域の標高値より高い
       \item 侵食領域と堆積領域の組み合わせである
       \item 画素同士が隣接している
     \end{itemize}
 
-    傾斜方向の判別には\ref{傾斜角度・傾斜方位算出}項の傾斜方位モデル，上流域と下流域の判別には\ref{災害後DSMの前処理}節の災害後DSM，侵食領域と堆積領域の組み合わせの判別には\ref{土砂量推定}節の土砂量推定結果を用いる．災害後の土砂標高値変化が負の場合は侵食領域，正の場合は堆積領域とする．また，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域に限定して土砂移動の変化を抽出する．\ref{傾斜角度・傾斜方位の算出}項，\ref{災害後DSMの前処理}節，\ref{土砂量推定}節，\ref{土砂領域マスク画像作成}節での出力結果における土砂移動推定結果を，\ref{オルソ画像の領域分割}項の入力画像に重畳した結果を\fref{土砂移動推定結果}に示す．
+    傾斜方向の判別には\ref{傾斜角度・傾斜方位算出}項の傾斜方位モデル，上流域と下流域の判別には\ref{災害後DSMの前処理}節の災害後DSM，侵食領域と堆積領域の組み合わせの判別には\ref{土砂量推定}節の土砂量推定結果を用いる．災害後の土砂標高値変化が負の場合は侵食領域，正の場合は堆積領域とする．また，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域の範囲に限定して処理を行う．なお，メッシュ内画素における土砂領域の画素数の方が非土砂領域の画素数より多かった場合，土砂領域メッシュとして処理を行う．\ref{オルソモザイク構築}項のオルソ画像に\ref{傾斜角度・傾斜方位算出}項，\ref{災害後DSMの前処理}節，\ref{土砂量推定}節，\ref{土砂領域マスク画像作成}節での出力結果における土砂移動推定結果を重畳した図を\fref{土砂移動推定結果}に示す．
     
-    \begin{figure}[t]
+    \begin{figure}[tbp]
       \centering
       \includegraphics[width=9cm]{image/method/sediment_vector.png}
       \caption{土砂移動概念図}
       \label{土砂移動概念図}
     \end{figure}
 
-    \begin{figure}[t]
+    \begin{figure}[tbp]
       \centering
       \includegraphics[width=9cm]{image/exmaple/sediment_vector.png}
       \caption{土砂移動推定図}
