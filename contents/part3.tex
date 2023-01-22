@@ -13,7 +13,7 @@
         CPU & AMD $\rm{Ryzen^{TM}}$ 7 1700 \\
         GPU & GeForce GTX 1080 \\
         メモリ & 32.00GB \\
-        OS & Ubuntu? XX（研究室で調べて加筆します） \\
+        OS & Ubuntu 20.04 \\
         使用ソフトウェア & Metashape 1.6.4 \\ \hline 
       \end{tabular}
     \end{table}
@@ -203,7 +203,7 @@
       \begin{figure}[tbp]
         \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=0.9\linewidth]{image/exmaple/dem.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dem_before.png}
           \subcaption{災害前DEM}
         \end{minipage}
         \begin{minipage}[c]{0.5\hsize}
@@ -218,7 +218,7 @@
       \begin{figure}[tbp]
         \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=0.9\linewidth]{image/exmaple/dem.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dem_before.png}
           \subcaption{災害前DEM}
         \end{minipage}
         \begin{minipage}[c]{0.5\hsize}
@@ -233,7 +233,7 @@
       \begin{figure}[tbp]
         \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=0.9\linewidth]{image/exmaple/dem.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dem_before.png}
           \subcaption{災害前DEM}
         \end{minipage}
         \begin{minipage}[c]{0.5\hsize}
@@ -578,25 +578,34 @@
       \ref{入力データ（実験）}節の災害後DSM，\ref{実験結果}節のオルソ画像を入力とし，災害後DSMの前処理を行った．実験1-3におけるジオリファレンサ，建物領域の標高値補正，災害後DSMの正規化の各処理結果を\fref{災害後DSMの前処理結果（実験1）}から\fref{災害後DSMの前処理結果（実験3）}に示す．なお，実験1については地理情報が埋め込まれている空撮画像であり自動で地図上への重畳が行われるため，ジオリファレンサ処理について未実施である．
 
       \begin{figure}[tbp]
+        \centering
+        \begin{minipage}[c]{0.4\hsize}
+          \centering
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm_after.png}
+          \subcaption{災害前DSM}
+          \vspace{\baselineskip}
+        \end{minipage} 
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_dsm.png}
-            \subcaption{DSMのジオリファレンサ結果}
+            \subcaption{DSMの地図への重畳結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering 
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_ortho.png}
-            \subcaption{オルソ画像のジオリファレンサ結果}
+            \subcaption{オルソ画像の地図への重畳結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/removed_building.png}
             \subcaption{建物領域の標高値補正結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
             \subcaption{災害後DSMの正規化結果}
@@ -607,25 +616,34 @@
       \end{figure}
 
       \begin{figure}[tbp]
+        \centering
+        \begin{minipage}[c]{0.4\hsize}
+          \centering
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm_after.png}
+          \subcaption{災害前DSM}
+          \vspace{\baselineskip}
+        \end{minipage} 
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_dsm.png}
             \subcaption{DSMのジオリファレンサ結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering 
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_ortho.png}
             \subcaption{オルソ画像のジオリファレンサ結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/removed_building.png}
             \subcaption{建物領域の標高値補正結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
             \subcaption{災害後DSMの正規化結果}
@@ -635,25 +653,34 @@
       \end{figure}
       
       \begin{figure}[tbp]
+        \centering
+        \begin{minipage}[c]{0.4\hsize}
+          \centering
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm_after.png}
+          \subcaption{災害前DSM}
+          \vspace{\baselineskip}
+        \end{minipage} 
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_dsm.png}
             \subcaption{DSMのジオリファレンサ結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering 
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_ortho.png}
             \subcaption{オルソ画像のジオリファレンサ結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/removed_building.png}
             \subcaption{建物領域の標高値補正結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
             \subcaption{災害後DSMの正規化結果}
@@ -665,40 +692,43 @@
 
 
     \subsection*{土砂領域マスク画像作成}
-      \ref{実験結果}節のオルソ画像の領域分割結果及び傾斜角度モデルを入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，急傾斜領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成結果（実験1）}から\fref{土砂領域マスク画像作成結果（実験3）}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
+      \ref{実験結果}節のオルソ画像の領域分割結果及び傾斜角度モデルを入力とし，土砂領域マスク画像作成を行った．実験1-3におけるヒストグラム均一化，土砂候補領域検出，植生領域検出，急傾斜領域検出，土砂領域検出，土砂領域マスク画像作成の各処理結果を\fref{土砂領域マスク画像作成結果（実験1）}から\fref{土砂領域マスク画像作成結果（実験3）}に示す．なお，各検出結果の赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域，黒色の領域が急傾斜領域であり，土砂領域マスク画像の白色の領域が土砂領域である．
 
       \begin{figure}[tbp]
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/clahe.png}
             \subcaption{ヒストグラム均一化結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment_candidate.png}
             \subcaption{土砂候補領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/vegetation.png}
             \subcaption{植生領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/slope_mask.png}
             \subcaption{急傾斜領域の検出結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment.png}
             \subcaption{土砂領域検出結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_mask.png}
             \subcaption{土砂領域マスク画像}
@@ -710,36 +740,39 @@
 
       \begin{figure}[tbp]
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/clahe.png}
             \subcaption{ヒストグラム均一化結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment_candidate.png}
             \subcaption{土砂候補領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/vegetation.png}
             \subcaption{植生領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/slope_mask.png}
             \subcaption{急傾斜領域の検出結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment.png}
             \subcaption{土砂領域検出結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \hspace{0.1\columnwidth}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_mask.png}
             \subcaption{土砂領域マスク画像}
@@ -750,35 +783,35 @@
 
       \begin{figure}[tbp]
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/clahe.png}
             \subcaption{ヒストグラム均一化結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment_candidate.png}
             \subcaption{土砂候補領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/vegetation.png}
             \subcaption{植生領域検出結果}
             \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/slope_mask.png}
             \subcaption{急傾斜領域の検出結果}
           \end{minipage} \\
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/sediment.png}
             \subcaption{土砂領域検出結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.5\hsize}
+          \begin{minipage}[c]{0.4\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/normed_mask.png}
             \subcaption{土砂領域マスク画像}
@@ -814,7 +847,7 @@
 
 
     \subsection*{土砂移動推定}
-      \ref{実験結果}節の補正済み災害後DSM，傾斜方位モデル，土砂領域マスク画像より土砂移動推定を行った．土砂移動推定結果を\fref{土砂移動推定結果（実験1）}から\fref{土砂移動推定結果（実験3）}及び\tref{土砂移動推定メッシュ数}に示す．
+      \ref{実験結果}節の補正済み災害後DSM，傾斜方位モデル，土砂領域マスク画像より土砂移動推定を行った．土砂移動推定結果を\fref{土砂移動推定結果（実験1）}から\fref{土砂移動推定結果（実験3）}及び\tref{土砂移動推定メッシュ数}に示す．なお，白線がメッシュ区分線，赤色のベクトルが土砂移動方向である．
 
       \begin{figure}[tbp]
         \centering

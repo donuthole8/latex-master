@@ -57,7 +57,7 @@
     \begin{figure}[tbp]
       \begin{minipage}[c]{0.45\hsize}
         \centering
-        \includegraphics[width=\linewidth]{image/exmaple/dem.png}
+        \includegraphics[width=\linewidth]{image/exmaple/dem_before.png}
         \subcaption{災害前DEM}
       \end{minipage}
       \begin{minipage}[c]{0.45\hsize}
@@ -277,13 +277,13 @@
       \begin{figure}[tbp]
         \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=0.9\linewidth]{image/exmaple/dem.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dem_before.png}
           \subcaption{災害前DEM}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
-          \subcaption{リサンプリング結果}
+          \subcaption{処理結果}
         \end{minipage}
         \caption{リサンプリング}
         \label{リサンプリング結果}
@@ -409,7 +409,7 @@
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/mean-shift.png}
-          \subcaption{Mean-shift法結果}
+          \subcaption{処理結果（領域分割画像）}
         \end{minipage}
         \caption{Mean-Shift法}
         \label{Mean-Shift法}
@@ -457,7 +457,7 @@
       \begin{figure}[tbp]
         \centering
         \includegraphics[width=0.5\linewidth]{image/exmaple/building.png}
-        \caption{建物領域検出}
+        \caption{建物領域検出結果}
         \label{建物領域検出結果}
       \end{figure}
 
@@ -483,12 +483,12 @@
           \begin{minipage}[c]{0.5\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_dsm.png}
-            \subcaption{災害後DSM}
+            \subcaption{災害後DSMでの処理結果}
           \end{minipage} &
           \begin{minipage}[c]{0.5\hsize}
             \centering
             \includegraphics[width=0.9\linewidth]{image/exmaple/geo_ortho.png}
-            \subcaption{オルソ画像}
+            \subcaption{オルソ画像での処理結果}
           \end{minipage}
         \end{tabular} \\
         \caption{ジオリファレンサ}
@@ -510,13 +510,13 @@
       \begin{figure}[tbp]
         \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm_after.png}
           \subcaption{災害後DSM}
         \end{minipage}
         \begin{minipage}[c]{0.5\hsize}
           \centering
           \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
-          \subcaption{災害後DSMの正規化結果}
+          \subcaption{処理結果}
         \end{minipage}
         \caption{災害後DSMの正規化}
         \label{災害後DSMの正規化結果}
@@ -538,7 +538,7 @@
       \begin{figure}[tbp]
         \centering
         \includegraphics[width=0.5\linewidth]{image/exmaple/removed_building.png}
-        \caption{建物領域の標高値補正}
+        \caption{建物領域の標高値補正結果}
         \label{建物領域の標高値補正結果}
       \end{figure}
 
@@ -555,7 +555,7 @@
       \begin{figure}[tbp]
         \centering
         \includegraphics[width=0.5\linewidth]{image/exmaple/clahe.png}
-        \caption{CLAHEのアルゴリズム}
+        \caption{CLAHEのアルゴリズム結果}
         \label{CLAHEのアルゴリズム結果}
       \end{figure}
 
@@ -617,7 +617,7 @@
 
     \subsection{土砂領域検出}
       \label{土砂領域検出}
-      \ref{L*a*b*表色系への変換}項のa*値，b*値画像及び\ref{傾斜角度・傾斜方位算出}項の傾斜角度モデルを用いて土砂領域の検出を行う．土砂災害は植生領域の多い山間部にて多発するため，土砂領域を検出する際に誤検出する可能性がある．よって，植生領域を土砂領域より除去する．また，土砂領域，植生領域はそれぞれ\tref{領域特徴}に示す特徴を持つためa*値，b*値による閾値処理を行い，土砂候補領域，植生領域として検出する．また，土砂災害における土砂災害発生危険箇所は傾斜角度が$15^{\circ} - 20^{\circ}$の領域，土砂到達範囲として傾斜角度が$2^{\circ} - 3^{\circ}$の領域であることが多い\cite{土砂災害発生範囲}．よって，傾斜角度モデルを用いて急傾斜領域を除去する．ただし，この傾斜角度によってマスク処理を行った場合土砂領域が必要以上に除去されてしまうため，本研究では$30^{\circ}$以上の領域を急傾斜領域として除去する．以上より，土砂候補領域から植生領域及び急傾斜領域を除去した領域を土砂領域とする．\ref{オルソ画像の領域分割}項の領域分割画像より土砂領域を検出した結果を\fref{土砂領域検出結果}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域である．
+      \ref{L*a*b*表色系への変換}項のa*値，b*値画像及び\ref{傾斜角度・傾斜方位算出}項の傾斜角度モデルを用いて土砂領域の検出を行う．土砂災害は植生領域の多い山間部にて多発するため，土砂領域を検出する際に誤検出する可能性がある．よって，植生領域を土砂領域より除去する．また，土砂領域，植生領域はそれぞれ\tref{領域特徴}に示す特徴を持つためa*値，b*値による閾値処理を行い，土砂候補領域，植生領域として検出する．また，土砂災害における土砂災害発生危険箇所は傾斜角度が$15^{\circ} - 20^{\circ}$の領域，土砂到達範囲として傾斜角度が$2^{\circ} - 3^{\circ}$の領域であることが多い\cite{土砂災害発生範囲}．よって，傾斜角度モデルを用いて急傾斜領域を除去する．ただし，この傾斜角度によってマスク処理を行った場合土砂領域が必要以上に除去されてしまうため，本研究では$30^{\circ}$以上の領域を急傾斜領域として除去する．以上より，土砂候補領域から植生領域及び急傾斜領域を除去した領域を土砂領域とする．\ref{オルソ画像の領域分割}項の領域分割画像より土砂領域を検出した結果を\fref{土砂領域検出結果}に示す．なお，赤色の領域が土砂候補領域及び土砂領域，緑色の領域が植生領域，黒色の領域が急傾斜領域である．
 
       \begin{table}[tbp]
         \centering
@@ -676,18 +676,18 @@
         \begin{minipage}[c]{0.45\hsize}
           \centering
           \includegraphics[width=\linewidth]{image/exmaple/closing.png}
-          \subcaption{クロージング処理結果}
+          \subcaption{処理結果}
         \end{minipage}
         \caption{クロージング処理}
         \label{クロージング処理結果}
       \end{figure}
 
-      次に，二値画像に対しラベリング処理を行うことによって各領域の面積を算出する．その後，領域面積における閾値処理によって，一般の建物と同程度，或いはそれ以下の面積の小領域を除去する．前述のクロージング処理結果に対し小領域除去を行った結果を\fref{小領域除去}に示す．
+      次に，二値画像に対しラベリング処理を行うことによって各領域の面積を算出する．その後，領域面積における閾値処理によって，一般の建物と同程度，或いはそれ以下の面積の小領域を除去する．前述のクロージング処理結果に対し小領域除去を行った結果を\fref{小領域除去}に示す．この出力結果が土砂領域マスク画像であり，白色の領域が土砂領域である．
       
       \begin{figure}[tbp]
         \centering
         \includegraphics[width=0.5\linewidth]{image/exmaple/normed_mask.png}
-        \caption{小領域の除去結果}
+        \caption{小領域の除去結果（土砂領域マスク画像）}
         \label{小領域除去}
       \end{figure}
 
@@ -727,7 +727,7 @@
       \item 画素同士が隣接している
     \end{itemize}
 
-    傾斜方向の判別には\ref{傾斜角度・傾斜方位算出}項の傾斜方位モデル，上流域と下流域の判別には\ref{災害後DSMの前処理}節の災害後DSM，侵食領域と堆積領域の組み合わせの判別には\ref{土砂量推定}節の土砂量推定結果を用いる．災害後の土砂標高値変化が負の場合は侵食領域，正の場合は堆積領域とする．また，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域の範囲に限定して処理を行う．なお，メッシュ内画素における土砂領域の画素数の方が非土砂領域の画素数より多かった場合，土砂領域メッシュとして処理を行う．\ref{オルソモザイク構築}項のオルソ画像に\ref{傾斜角度・傾斜方位算出}項，\ref{災害後DSMの前処理}節，\ref{土砂量推定}節，\ref{土砂領域マスク画像作成}節での出力結果における土砂移動推定結果を重畳した図を\fref{土砂移動推定結果}に示す．
+    傾斜方向の判別には\ref{傾斜角度・傾斜方位算出}項の傾斜方位モデル，上流域と下流域の判別には\ref{災害後DSMの前処理}節の災害後DSM，侵食領域と堆積領域の組み合わせの判別には\ref{土砂量推定}節の土砂量推定結果を用いる．災害後の土砂標高値変化が負の場合は侵食領域，正の場合は堆積領域とする．また，\ref{土砂領域マスク画像作成}節で作成した土砂マスク画像を適用することによって，土砂領域の範囲に限定して処理を行う．なお，メッシュ内画素における土砂領域の画素数の方が非土砂領域の画素数より多かった場合，土砂領域メッシュとして処理を行う．\ref{オルソモザイク構築}項のオルソ画像に\ref{傾斜角度・傾斜方位算出}項，\ref{災害後DSMの前処理}節，\ref{土砂量推定}節，\ref{土砂領域マスク画像作成}節での出力結果における土砂移動推定結果を重畳した図を\fref{土砂移動推定結果}に示す．なお，白線がメッシュ区分線，赤色のベクトルが土砂移動方向である．
     
     \begin{figure}[tbp]
       \centering
