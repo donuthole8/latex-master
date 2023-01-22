@@ -32,19 +32,19 @@
     \begin{figure}[tbp]
       \begin{minipage}[c]{0.329\hsize}
         \centering
-        \includegraphics[width=4.5cm]{image/exmaple/input1.jpg}
+        \includegraphics[width=0.9\linewidth]{image/exmaple/input1.jpg}
         \subcaption{入力画像例1}
         \label{入力画像例1}
       \end{minipage}
       \begin{minipage}[c]{0.329\hsize}
         \centering
-        \includegraphics[width=4.5cm]{image/exmaple/input2.jpg}
+        \includegraphics[width=0.9\linewidth]{image/exmaple/input2.jpg}
         \subcaption{入力画像例2}
         \label{入力画像例2}
       \end{minipage}
       \begin{minipage}[c]{0.329\hsize}
         \centering
-        \includegraphics[width=4.5cm]{image/exmaple/input3.jpg}
+        \includegraphics[width=0.9\linewidth]{image/exmaple/input3.jpg}
         \subcaption{入力画像例3}
         \label{入力画像例3}
       \end{minipage}
@@ -62,12 +62,13 @@
       \end{minipage}
       \begin{minipage}[c]{0.45\hsize}
         \centering
-        \includegraphics[width=\linewidth]{image/exmaple/building_polygon.png}
+        \includegraphics[clip,width=\linewidth]{image/exmaple/building_polygon.png}
         \subcaption{建物ポリゴン}
       \end{minipage}
       \caption{基盤地図情報}
       \label{基盤地図情報}
     \end{figure}
+
 
 
   \section{三次元復元}
@@ -161,7 +162,7 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/view_reset.jpg}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/view_reset.jpg}
         \caption{Z軸指定の処理結果}
         \label{Z軸指定結果}
       \end{figure}
@@ -268,15 +269,23 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=6cm]{image/method/bicubic.png}
+        \includegraphics[width=0.6\linewidth]{image/method/bicubic.png}
         \caption{バイキュービック法におけるピクセル図}
         \label{ピクセル図}
       \end{figure}
       
       \begin{figure}[tbp]
-        \centering
-        \includegraphics[width=6cm]{image/method/mesh.png}
-        \caption{バイキュービック法によるリサンプリング}
+        \begin{minipage}[c]{0.5\hsize}
+          \centering
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dem.png}
+          \subcaption{災害前DEM}
+        \end{minipage}
+        \begin{minipage}[c]{0.45\hsize}
+          \centering
+          \includegraphics[width=\linewidth]{image/exmaple/resampling.png}
+          \subcaption{リサンプリング結果}
+        \end{minipage}
+        \caption{リサンプリング}
         \label{リサンプリング結果}
       \end{figure}
 
@@ -315,20 +324,20 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=6cm]{image/method/mesh.png}
+        \includegraphics[width=0.5\linewidth]{image/method/mesh.png}
         \caption{傾斜角度・傾斜方位におけるメッシュ図}
         \label{メッシュ図}
       \end{figure}
       
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/slope.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/slope.png}
           \subcaption{傾斜角度モデル}
         \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/aspect.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/aspect.png}
           \subcaption{傾斜方位モデル}
         \end{minipage}
         \caption{傾斜角度・傾斜方位モデル}
@@ -337,7 +346,7 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=6cm]{image/method/color_bar.png}
+        \includegraphics[width=0.5\linewidth]{image/method/color_bar.png}
         \caption{疑似カラーバー}
         \label{疑似カラーバー}
       \end{figure}
@@ -392,9 +401,9 @@
       なお，本研究ではMean-Shift法の特徴量空間に距離を表す画素位置$(x,y)$，色相を表す画素値$(R,G,B)$を用いるため5次元空間での処理となり，距離・色相の近い画素群が一つの領域となる．\ref{オルソモザイク構築}項で得られたオルソ画像に対しMean-Shift法を適用した結果を\fref{Mean-Shift法}に示す．
 
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/trimming.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/trimming.png}
           \subcaption{オルソ画像}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
@@ -412,9 +421,9 @@
       \ref{建物領域検出}項にて建物領域を検出する際に，領域の面積や周囲長といった値が必要である．これらの領域データは通常，ラベリング処理\footnote{二値画像中の連結した領域を抽出する解析手法であり，各領域の面積，周囲長，重心座標等を取得できる}によって取得可能である．しかし，単純に二値化を行った際に，\fref{建物領域の二値化例}に示すように複数の建物領域を同一の領域として検出してしまい，建物領域の面積や周囲長が正しく取得できない．よって，本研究では\ref{オルソ画像の領域分割}項の出力結果に対して以下の処理（本研究では本処理をカラーラベリングと呼称する）を行い，類似領域を区別して検出できるようにする．カラーラベリング処理と通常のラベリング処理との相違点として，色相が同一である近傍の連結画素を領域として抽出する．\ref{オルソ画像の領域分割}項の出力画像に対しカラーラベリングを適用した際のラベル画像を\fref{カラーラベリング結果}に示す．
 
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/building_ortho.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/building_ortho.png}
           \subcaption{オルソ画像における建物領域}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
@@ -428,7 +437,7 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/labeling.png}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/labeling.png}
         \caption{カラーラベリング結果}
         \label{カラーラベリング結果}
       \end{figure}
@@ -447,7 +456,7 @@
       
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/building.png}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/building.png}
         \caption{建物領域検出}
         \label{建物領域検出結果}
       \end{figure}
@@ -466,21 +475,22 @@
       QGISにてジオリファレンサを起動し，ラスタデータ上のランドマークと地図上のランドマークの対応点付けを行う．最低4箇所の対応付けが必要であり，対応付け箇所が多いほど精度が向上する．\ref{DEM構築}項の災害後DSM，\ref{オルソモザイク構築}項のオルソ画像に対しジオリファレンサを行い，国土地理院標準地図\cite{標準地図}に重畳した際の処理結果を\fref{ジオリファレンサ結果}に示す．
       
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.329\hsize}
-          \centering
-          \includegraphics[width=4.5cm]{image/setting/georeferencer.png}
-          \subcaption{設定値}
-        \end{minipage}
-        \begin{minipage}[c]{0.329\hsize}
-          \centering
-          \includegraphics[width=4.5cm]{image/exmaple/geo_dsm.png}
-          \subcaption{災害後DSM}
-        \end{minipage}
-        \begin{minipage}[c]{0.329\hsize}
-          \centering
-          \includegraphics[width=4.5cm]{image/exmaple/geo_ortho.png}
-          \subcaption{オルソ画像}
-        \end{minipage}
+        \centering
+        \includegraphics[width=0.5\linewidth]{image/setting/georeferencer.png}
+        \subcaption{設定値}
+        \vspace{\baselineskip}
+        \begin{tabular}{cc}
+          \begin{minipage}[c]{0.5\hsize}
+            \centering
+            \includegraphics[width=0.9\linewidth]{image/exmaple/geo_dsm.png}
+            \subcaption{災害後DSM}
+          \end{minipage} &
+          \begin{minipage}[c]{0.5\hsize}
+            \centering
+            \includegraphics[width=0.9\linewidth]{image/exmaple/geo_ortho.png}
+            \subcaption{オルソ画像}
+          \end{minipage}
+        \end{tabular} \\
         \caption{ジオリファレンサ}
         \label{ジオリファレンサ結果}
       \end{figure}
@@ -498,14 +508,14 @@
       \end{equation}
 
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/dsm.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/dsm.png}
           \subcaption{災害後DSM}
         \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/normed_dsm.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
           \subcaption{災害後DSMの正規化結果}
         \end{minipage}
         \caption{災害後DSMの正規化}
@@ -527,7 +537,7 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/removed_building.png}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/removed_building.png}
         \caption{建物領域の標高値補正}
         \label{建物領域の標高値補正結果}
       \end{figure}
@@ -544,7 +554,7 @@
 
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/clahe.png}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/clahe.png}
         \caption{CLAHEのアルゴリズム}
         \label{CLAHEのアルゴリズム結果}
       \end{figure}
@@ -590,14 +600,14 @@
       \end{eqnarray}
 
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/lab-a.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/lab-a.png}
           \subcaption{a*値画像}
         \end{minipage}
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/lab-b.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/lab-b.png}
           \subcaption{b*値画像}
         \end{minipage}
         \caption{L*a*b*表色系}
@@ -624,24 +634,26 @@
       
       \begin{figure}[tbp]
         \begin{tabular}{cc}
-          \begin{minipage}[c]{0.45\hsize}
+          \begin{minipage}[c]{0.5\hsize}
             \centering
-            \includegraphics[width=\linewidth]{image/exmaple/sediment_candidate.png}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/sediment_candidate.png}
             \subcaption{土砂候補領域の検出結果}
+            \vspace{\baselineskip}
           \end{minipage} &
-          \begin{minipage}[c]{0.45\hsize}
+          \begin{minipage}[c]{0.5\hsize}
             \centering
-            \includegraphics[width=\linewidth]{image/exmaple/vegetation.png}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/vegetation.png}
             \subcaption{植生領域の検出結果}
+            \vspace{\baselineskip}
           \end{minipage} \\
-          \begin{minipage}[c]{0.45\hsize}
+          \begin{minipage}[c]{0.5\hsize}
             \centering
-            \includegraphics[width=\linewidth]{image/exmaple/slope_mask.png}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/slope_mask.png}
             \subcaption{急傾斜領域の検出結果}
           \end{minipage} &
-          \begin{minipage}[c]{0.45\hsize}
+          \begin{minipage}[c]{0.5\hsize}
             \centering
-            \includegraphics[width=\linewidth]{image/exmaple/sediment.png}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/sediment.png}
             \subcaption{土砂領域検出結果}
           \end{minipage} \\
         \end{tabular}
@@ -656,9 +668,9 @@
       クロージング処理とは二値画像に対し膨張処理\footnote{注目画素の8近傍に白画素がある場合，注目画素を白色にする処理}を複数回行った後，収縮処理\footnote{注目画素の8近傍に黒画素がある場合，注目画素を黒色にする処理}を同回数行い，画像中の穴を除去する処理である．\ref{土砂領域検出}項の二値画像におけるクロージング処理の結果を\fref{クロージング処理結果}に示す．
 
       \begin{figure}[tbp]
-        \begin{minipage}[c]{0.45\hsize}
+        \begin{minipage}[c]{0.5\hsize}
           \centering
-          \includegraphics[width=\linewidth]{image/exmaple/sediment_bin.png}
+          \includegraphics[width=0.9\linewidth]{image/exmaple/sediment_bin.png}
           \subcaption{土砂領域の二値画像}
         \end{minipage}
         \begin{minipage}[c]{0.45\hsize}
@@ -674,7 +686,7 @@
       
       \begin{figure}[tbp]
         \centering
-        \includegraphics[width=9cm]{image/exmaple/normed_mask.png}
+        \includegraphics[width=0.5\linewidth]{image/exmaple/normed_mask.png}
         \caption{小領域の除去結果}
         \label{小領域除去}
       \end{figure}
@@ -694,7 +706,7 @@
 
     \begin{figure}[tbp]
       \centering
-      \includegraphics[width=9cm]{image/exmaple/difference.png}
+      \includegraphics[width=0.5\linewidth]{image/exmaple/difference.png}
       \caption{土砂量推定図}
       \label{土砂量推定結果}
     \end{figure}
@@ -719,15 +731,16 @@
     
     \begin{figure}[tbp]
       \centering
-      \includegraphics[width=9cm]{image/method/sediment_vector.png}
+      \includegraphics[width=0.5\linewidth]{image/method/sediment_vector.png}
       \caption{土砂移動概念図}
       \label{土砂移動概念図}
     \end{figure}
 
     \begin{figure}[tbp]
       \centering
-      \includegraphics[width=9cm]{image/exmaple/sediment_vector.png}
+      \includegraphics[width=0.5\linewidth]{image/exmaple/sediment_vector.png}
       \caption{土砂移動推定図}
       \label{土砂移動推定結果}
     \end{figure}
+    ぱや
   
