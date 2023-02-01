@@ -74,6 +74,9 @@ https://github.com/donuthole8/latex-master
 ### Issues
 https://github.com/donuthole8/latex-master/issues
 
+### Slack Tips
+https://saji-lab.slack.com/archives/C041JS832MN/p1670164146871119
+
 
 ## その他
 容量が10MB以上のファイルはGithubにアップロードできないため.gitignoreにPDFと画像を追記
