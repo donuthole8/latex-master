@@ -40,7 +40,7 @@
   \section{入力データ}
     \label{入力データ（実験）}
     \subsection*{災害後空撮画像}
-      災害後空撮画像について防災科学技術研究所提供のドローン空撮画像\cite{防災科研空撮画像}（実験1），国土地理院提供のヘリコプター空撮画像\cite{国土地理院空撮画像1, 国土地理院空撮画像2}（実験2，実験3）を使用して実験を行った．実験1は平成30年7月豪雨のドローン空撮画像であり，防災科学技術研究所より貸与頂いた．実験2，実験3はそれぞれ平成30年7月豪雨と熱海市伊豆山土石流災害のヘリコプター空撮画像であり，国土地理院の公開している災害情報ページより取得した．それぞれの災害後空撮画像の詳細を\tref{空撮画像（実験1）}から\tref{空撮画像（実験3）}に示す．また，使用した災害後空撮画像の内3例を\fref{空撮画像1}から\fref{空撮画像3}に示す．
+      災害後空撮画像について防災科学技術研究所提供のドローン空撮画像\cite{防災科研空撮画像}（実験1），国土地理院提供のヘリコプター空撮画像\cite{国土地理院空撮画像1, 国土地理院空撮画像2}（実験2，実験3）を使用して実験を行った．実験1は平成30年7月豪雨のドローン空撮画像であり，防災科学技術研究所より貸与頂いた．実験2，実験3はそれぞれ平成30年7月豪雨と熱海市伊豆山土石流災害のヘリコプター空撮画像であり，国土地理院の公開している災害情報ページより取得した．それぞれの災害後空撮画像の詳細を\tref{空撮画像（実験1）}から\tref{空撮画像（実験3）}に示す．また，使用した災害後空撮画像の例を\fref{空撮画像1}から\fref{空撮画像3}に示す．
 
       \begin{table}[tbp]
         \centering
@@ -174,7 +174,7 @@
           2016年10月01日（実験2） \\
           2019年07月01日（実験3） \\
           \end{tabular} \\
-          データ形式 & 5m（標高） \\
+          データ形式 & 5mメッシュ（標高） \\
           提供 & 国土地理院 \\ \hline
         \end{tabular}
       \end{table}
@@ -246,7 +246,7 @@
 
 
     \subsection*{正解データ}
-      精度評価において使用する正解データを目視判読にて作成した．国土地理院の空中写真による災害前後の比較\cite{国土地理院空撮画像1, 国土地理院空撮画像2}による目視判読を行い，メッシュ単位での土砂移動の方位データを作成した．また，後述の土砂マスクの土砂領域の範囲に限定して作成した．作成した正解データを\fref{正解データ（実験1）}から\fref{正解データ（実験3）}に示す．
+      精度評価において使用する正解データを目視判読にて作成した．国土地理院の空中写真による災害前後の比較及び崩壊地・崩壊地等分布図，広島県土木建築局の被害状況調査結果\cite{国土地理院空撮画像1, 国土地理院空撮画像2, 被害状況}による目視判読を行い，メッシュ単位での土砂移動の方位データを作成した．また，崩壊地等分布図における土砂領域範囲に限定して作成した．作成した正解データを\fref{正解データ（実験1）}から\fref{正解データ（実験3）}に示す．
 
       \begin{figure}[tbp]
         \centering
@@ -425,7 +425,7 @@
                   
 
     \subsection*{災害前DEMの前処理}
-      \ref{入力データ（実験）}節の災害前DEMを入力とし，災害前DEMの前処理を行った．実験1-3におけるリサンプリング，傾斜角度算出，傾斜方位算出の各処理結果を\fref{災害前DEMの前処理結果（実験1）}から\fref{災害前DEMの前処理結果（実験3）}に示す．なお，疑似カラーバーを\fref{疑似カラーバー}に示す．
+      \ref{入力データ（実験）}節の災害前DEMを入力とし，災害前DEMの前処理を行った．実験1-3におけるリサンプリング，傾斜角度算出，傾斜方位算出の各処理結果を\fref{災害前DEMの前処理結果（実験1）}から\fref{災害前DEMの前処理結果（実験3）}に示す．なお，\fref{疑似カラーバー}に示す疑似カラーバーに従うものとする．
 
       \begin{figure}[tbp]
         \centering
@@ -600,14 +600,14 @@
           \end{minipage} \\
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exmaple/removed_building.png}
-            \subcaption{建物領域の標高値補正結果}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
+            \subcaption{災害後DSMの正規化結果}
           \end{minipage} &
           \hspace{0.1\columnwidth}
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exmaple/normed_dsm.png}
-            \subcaption{災害後DSMの正規化結果}
+            \includegraphics[width=0.9\linewidth]{image/exmaple/removed_building.png}
+            \subcaption{建物領域の標高値補正結果}
           \end{minipage} \\
         \end{tabular}
         \caption{災害後DSMの前処理結果（実験1）}
@@ -638,14 +638,14 @@
           \end{minipage} \\
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exp2/removed_building.png}
-            \subcaption{建物領域の標高値補正結果}
+            \includegraphics[width=0.9\linewidth]{image/exp2/normed_dsm.png}
+            \subcaption{災害後DSMの正規化結果}
           \end{minipage} &
           \hspace{0.1\columnwidth}
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exp2/normed_dsm.png}
-            \subcaption{災害後DSMの正規化結果}
+            \includegraphics[width=0.9\linewidth]{image/exp2/removed_building.png}
+            \subcaption{建物領域の標高値補正結果}
           \end{minipage} \\
         \end{tabular}
         \caption{災害後DSMの前処理結果（実験2）}
@@ -675,14 +675,14 @@
           \end{minipage} \\
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exp3/removed_building.png}
-            \subcaption{建物領域の標高値補正結果}
+            \includegraphics[width=0.9\linewidth]{image/exp3/normed_dsm.png}
+            \subcaption{災害後DSMの正規化結果}
           \end{minipage} &
           \hspace{0.1\columnwidth}
           \begin{minipage}[c]{0.4\hsize}
             \centering
-            \includegraphics[width=0.9\linewidth]{image/exp3/normed_dsm.png}
-            \subcaption{災害後DSMの正規化結果}
+            \includegraphics[width=0.9\linewidth]{image/exp3/removed_building.png}
+            \subcaption{建物領域の標高値補正結果}
           \end{minipage} \\
         \end{tabular}
         \caption{災害後DSMの前処理結果（実験3）}
@@ -822,7 +822,7 @@
 
 
     \subsection*{土砂量推定}
-      \ref{実験結果}節における，補正済み災害前DEM，補正済み災害後DSM，土砂領域マスク画像の出力結果より土砂量推定を行った．土砂量推定結果を\fref{土砂量推定結果（実験1）}から\fref{土砂量推定結果（実験3）}に示す．なお，疑似カラーバーを\fref{疑似カラーバー}に示す．
+      \ref{実験結果}節における，補正済み災害前DEM，補正済み災害後DSM，土砂領域マスク画像の出力結果より土砂量推定を行った．土砂量推定結果を\fref{土砂量推定結果（実験1）}から\fref{土砂量推定結果（実験3）}に示す．なお，\fref{疑似カラーバー}に示す疑似カラーバーに従うものとする．
       
       \begin{figure}[tbp]
         \centering
@@ -874,23 +874,21 @@
         \label{土砂移動推定メッシュ数}
         \begin{tabular}{ccc}
           \hline
-          \textbf{実験} & \textbf{メッシュサイズ（縦，横）} & \textbf{土砂マスク適用後メッシュ数} \\
+          \textbf{実験} & \textbf{メッシュサイズ（縦，横）} & \textbf{土砂領域マスク適用後メッシュ数} \\
           \hline  \hline
-          実験1 & (13, 12) & 65 \\
-          実験2 & (11, 10) & 14 \\
-          実験3 & (12, 12) & 14 \\ \hline
+          実験1 & (13, 12) & 69 \\
+          実験2 & (11, 10) & 26 \\
+          実験3 & (12, 12) & 17 \\ \hline
         \end{tabular}
       \end{table}
  
 
   \section{精度評価}
-  TODO: 国土地理院＋その他正解データ参考載せる
-
-    メッシュ毎の土砂移動の方位についての精度評価を行った．まず，\ref{入力データ（実験）}節に示す正解データを作成した．\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の方位データと正解方位データ（$0^\circ$から$360^\circ$（真北）で右回りとする）を比較することにより，\Fref{精度評価}に示す式にて百分率における精度評価を行った．$answer$は正解方位データ，$result$は土砂移動推定結果による方位データ，$accuracy$は精度を示す．代表的な10メッシュ及び合計平均精度を記載した精度評価結果を\Fref{精度評価結果（実験1）}から\Fref{精度評価結果（実験3）}に示す．なお，メッシュ番号の$(x,y)$は画像左上部を起点とし右下部であるほど値が大きくなるとする．
+    メッシュ毎の土砂移動の方位についての精度評価を行った．まず，\ref{入力データ（実験）}節に示す正解データを作成した．\ref{土砂移動推定}節での土砂移動推定結果による土砂移動方向の方位データと正解方位データ（$0^\circ$から$360^\circ$（真北）で右回りとする）を比較することにより，\tref{精度評価}に示す式にて百分率における精度評価を行った．$answer$は正解方位データ，$result$は土砂移動推定結果による方位データ，$accuracy$は精度を示す．各メッシュの精度及び合計平均精度を記載した精度評価結果を\tref{精度評価結果（実験1）}から\tref{精度評価結果（実験3）}に示す．また，正解データと推定メッシュの一致数，誤検出メッシュ数及び未検出メッシュ数を\tref{土砂移動推定精度}に示す．なお，実験1については代表的な10メッシュのみ記載し，メッシュ番号の$(x,y)$は画像左上部を起点とし右下部であるほど値が増加するとする．また，合計平均精度において未検出及び誤検出メッシュは考慮しないものとする．
 
     \begin{equation}
       \label{精度評価}
-      accuracy = 1 - |\dfrac{answer - result} {180}|
+      accuracy = |1 - |\dfrac{answer - result} {180}||
     \end{equation}
 
     \begin{table}[tbp]
@@ -923,8 +921,21 @@
         \hline
         \textbf{メッシュ番号（x,y）} & \textbf{結果方位[$^{\circ}$]} & \textbf{正解方位[$^{\circ}$]} & \textbf{精度} \\
         \hline  \hline
-        1  (0,0)  & XXX & XXX & XXX \\
-        合計平均 & - & - & 0.730 \\
+        1 (0,3) & 300 & 340 & 0.779 \\
+        2 (0,5) & 199 & 25 & 0.03 \\
+        3 (1,1) & 236 & 355 & 0.34 \\
+        4 (1,2) & 337 & 335 & 0.987 \\
+        5 (1,3) & 331 & 340 & 0.952 \\
+        6 (1,6) & 65 & 50 & 0.913 \\
+        7 (2,0) & 139 & 45 & 0.477 \\
+        8 (2,1) & 259 & 330 & 0.61 \\
+        9 (2,6) & 97 & 95 & 0.985 \\
+        10 (3,1) & 224 & 35 & 0.051 \\
+        11 (3,7) & 232 & 290 & 0.679 \\
+        12 (3,8) & 253 & 285 & 0.826 \\
+        13 (5,6) & 82 & 60 & 0.876 \\
+        14 (6,6) & 91 & 70 & 0.883 \\
+        合計平均 & - & - & 0.670 \\
         \hline
       \end{tabular}
     \end{table}
@@ -937,9 +948,36 @@
         \hline
         \textbf{メッシュ番号（x,y）} & \textbf{結果方位[$^{\circ}$]} & \textbf{正解方位[$^{\circ}$]} & \textbf{精度} \\
         \hline  \hline
-        1  (0,0)  & XXX & XXX & XXX \\
-        合計平均 & - & - & 0.730 \\
+        1 (1,3) & 202 & 200 & 0.984 \\
+        2 (2,3) & 154 & 170 & 0.911 \\
+        3 (3,3) & 123 & 130 & 0.966 \\
+        4 (3,4) & 184 & 140 & 0.753 \\
+        5 (4,3) & 82 & 105 & 0.874 \\
+        6 (4,4) & 120 & 115 & 0.969 \\
+        7 (4,5) & 165 & 145 & 0.886 \\
+        8 (5,5) & 127 & 125 & 0.987 \\
+        9 (5,6) & 160 & 160 & 0.996 \\
+        10 (6,6) & 102 & 110 & 0.956 \\
+        11 (6,7) & 112 & 125 & 0.932 \\
+        12 (7,7) & 104 & 110 & 0.968 \\
+        13 (7,8) & 121 & 120 & 0.993 \\
+        14 (8,10) & 166 & 145 & 0.879 \\
+        合計平均 & - & - & 0.932 \\
         \hline
+      \end{tabular}
+    \end{table}
+
+    \begin{table}[tbp]
+      \centering
+      \caption{土砂移動推定における未検出及び誤検出数}
+      \label{土砂移動推定精度}
+      \begin{tabular}{cccc}
+        \hline
+        \textbf{実験} & \textbf{精度算出メッシュ数} & \textbf{誤検出メッシュ数} & \textbf{未検出メッシュ数} \\
+        \hline  \hline
+        実験1 & 65 & 3 & 10 \\
+        実験2 & 14 & 9 & 7 \\
+        実験3 & 14 & 5 & 3 \\ \hline
       \end{tabular}
     \end{table}
 
@@ -977,7 +1015,7 @@
       \end{figure}      
 
 
-    \subsection*{土砂マスク画像作成}
+    \subsection*{土砂領域マスク画像作成}
       土砂領域を検出する際に，\fref{影領域}及び\fref{道路領域}に示すように，土砂領域中の影領域が未検出であり，無被害の道路領域を誤検出しているという問題がある．
 
       影領域を検出するための手法として，影領域マスク画像の作成，影画素検出手法の利用が挙げられる．影領域は輝度値が小さいという特徴を持つため，\ref{L*a*b*表色系への変換}項で示した輝度（L*）で判別することが考えられる．ただし，植生領域や道路領域，特に植生にかかる影領域も同様の特徴を持つためこれらを土砂中の影領域として検出した場合，誤検出の原因となる可能性がある．また，太陽の位置及び方位や地形特徴を利用したModel-based methodsや，影の色相及び境界から検出を行うImage-based methods等を用いることが考えられる．なお，本研究で利用するデータはジオリファレンサ等により地理的情報を持つため，親和性が高い\cite{影領域検出}．
